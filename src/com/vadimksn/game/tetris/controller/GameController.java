@@ -65,30 +65,71 @@ public class GameController {
         return tile == null;
     }
 
-    /**
-     * -1 - Left wall
-     * 1 - Right wall
-     */
-    public boolean isTouchWall(int direction, Tile shape[][]) {
+
+    public boolean isShapeTouchWall(Direction direction, Tile shape[][]) {
         switch (direction) {
-            case -1:
+            case LEFT:
                 for (Tile[] shapeY : shape) {
                     Tile tile = shapeY[0];
-                    if (tile != null && tile.getX() == 0) return true;
+                    if (tile != null && tile.getX() == 0)
+                        return true;
                 }
                 break;
-            case 1:
+            case RIGHT:
                 for (Tile[] shapeY : shape) {
                     Tile tile = shapeY[shapeY.length - 1];
-                    if (tile != null && tile.getX() == GamePanel.COLUMNS_COUNT - 1) return true;
+                    if (tile != null && tile.getX() == GamePanel.COLUMNS_COUNT - 1)
+                        return true;
                 }
                 break;
         }
         return false;
     }
 
-    public void stepDownShape(Tile shape[][]) {
+    /**
+     * Check if we can move our current shape LEFT or RIGHT.
+     */
+    public boolean canMoveShape(Direction direction, Tile shape[][]) {
+        if (isShapeTouchWall(direction, shape) || isShapeTochAnotherShape(direction, shape)) {
+            return false;
 
+        }
+        return true;
+    }
+
+    /**
+     * Check if our current shape touch LEFT or RIGHT another shape.
+     */
+    public boolean isShapeTochAnotherShape(Direction direction, Tile shape[][]) {
+        switch (direction) {
+            case LEFT:
+                for (Tile[] shapeY : shape) {
+                    Tile ourTile = shapeY[0];
+                    if (!isTileEmpty(ourTile) && !isTileEmpty(gameMas[ourTile.getY()][ourTile.getX() + direction.getX()]))
+                        return true;
+                }
+            case RIGHT:
+                for (Tile[] shapeY : shape) {
+                    Tile ourTile = shapeY[shapeY.length - 1];
+                    if (!isTileEmpty(ourTile) && !isTileEmpty(gameMas[ourTile.getY()][ourTile.getX() + direction.getX()]))
+                        return true;
+                }
+        }
+        return false;
+    }
+
+    /**
+     * Move our current shape LEFT or RIGHT.
+     */
+    public void move(Direction direction, Tile shape[][]) {
+        for (Tile shapeY[] : shape) {
+            for (Tile tile : shapeY) {
+                if (!isTileEmpty(tile)) tile.setX(tile.getX() + direction.getX());
+            }
+        }
+    }
+
+    public void stepDownShape(Tile shape[][]) {
         for (Tile[] shapeY : shape) {
             for (Tile tile : shapeY) {
                 if (tile != null) {

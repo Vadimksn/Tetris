@@ -22,38 +22,11 @@ public class GamePanel extends JPanel implements ActionListener {
     public static final Color BASE_LIGHT_COLOR = new Color(45, 151, 166);
     public static final Color BASE_LIGHT_COLOR2 = new Color(31, 103, 114);
 
-    private Timer timer = new Timer(50, this);
-    Tile gameMas[][] = GameController.getINSTANCE().getGameMas();
+    private Timer timer = new Timer(300, this);
+
 
 
     public GamePanel() {
-        Tile tile = new Tile(19, 0, Color.red);
-        Tile tile1 = new Tile(19, 1, Color.red);
-        Tile tile2 = new Tile(18, 0, Color.red);
-        Tile tile3 = new Tile(18, 1, Color.red);
-        gameMas[19][0] = tile;
-        gameMas[19][1] = tile1;
-        gameMas[18][0] = tile2;
-        gameMas[18][1] = tile3;
-
-        Tile tile11 = new Tile(19, 2, Color.green);
-        Tile tile12 = new Tile(19, 3, Color.green);
-        Tile tile13 = new Tile(19, 4, Color.green);
-        Tile tile14 = new Tile(18, 3, Color.green);
-        gameMas[19][2] = tile11;
-        gameMas[19][3] = tile12;
-        gameMas[19][4] = tile13;
-        gameMas[18][3] = tile14;
-
-
-        Tile tile22 = new Tile(19, 7, Color.orange);
-        Tile tile23 = new Tile(19, 8, Color.orange);
-        Tile tile24 = new Tile(19, 9, Color.orange);
-
-        gameMas[19][7] = tile22;
-        gameMas[19][8] = tile23;
-        gameMas[19][9] = tile24;
-
 
         setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
         setBackground(BASE_DARK_COLOR);
@@ -66,7 +39,7 @@ public class GamePanel extends JPanel implements ActionListener {
         super.paintComponent(g);
         g.translate(BORDER_SIZE, BORDER_SIZE);
 
-        PaintController.getINSTANCE().paintGameMas(gameMas, g);
+        PaintController.getINSTANCE().paintGameMas(GameController.getINSTANCE().getGameMas(), g);
         PaintController.getINSTANCE().paintShape(GameController.getINSTANCE().getCurrentShape(), g);
 
         g.setColor(BASE_LIGHT_COLOR2);
