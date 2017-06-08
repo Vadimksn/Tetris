@@ -15,15 +15,20 @@ public class GameController {
     }
 
     public void start() {
-        if (canShapeStepDown(currentShape)) {
-            stepDownShape(currentShape);
-        } else {
-            writeShapeToGameMas(currentShape);
-            setCurrentShape(Figure.getRandomFigure());
-        }
+        if (!gameOver()) {
+            if (canShapeStepDown(currentShape)) {
+                stepDownShape(currentShape);
+            } else {
+                writeShapeToGameMas(currentShape);
+                setCurrentShape(Figure.getRandomFigure());
+            }
+        }else writeShapeToGameMas(currentShape);
     }
 
     public boolean gameOver() {
+        for (int x = 3; x < 7; x++) {
+            if (!isTileEmpty(gameMas[1][x])) return true;
+        }
         return false;
     }
 
