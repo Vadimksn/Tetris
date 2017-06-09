@@ -20,13 +20,17 @@ public class GameController {
                 stepDownShape(currentShape);
             } else {
                 writeShapeToGameMas(currentShape);
+                scanAndClearRows(currentShape, gameMas);
                 setCurrentShape(Figure.getRandomFigure());
             }
-        }else writeShapeToGameMas(currentShape);
+        } else writeShapeToGameMas(currentShape);
     }
 
     public boolean gameOver() {
-        for (int x = 3; x < 7; x++) {
+        if (!isTileEmpty(currentShape[0][0]) && currentShape[0][0].getX() == 3) {
+            if (!isTileEmpty(gameMas[1][3])) return true;
+        }
+        for (int x = 4; x < 7; x++) {
             if (!isTileEmpty(gameMas[1][x])) return true;
         }
         return false;
@@ -40,6 +44,48 @@ public class GameController {
                 }
             }
         }
+    }
+
+    public void scanAndClearRows(Tile shape[][], Tile tiles[][]) {
+        int firstY = 0;
+        int lastY = 0;
+        for (Tile tile : shape[0]) {
+            if (!isTileEmpty(tile)) {
+                firstY = tile.getY();
+                break;
+            }
+        }
+        for (Tile tile : shape[shape.length - 1]) {
+            if (!isTileEmpty(tile)) {
+                lastY = tile.getY();
+                break;
+            }
+        }
+        for (int y = firstY; y < lastY + 1; y++) {
+            boolean rowIsFull = true;
+            for (int x = 0; x < tiles[y].length; x++) {
+                if (isTileEmpty(tiles[y][x])) {
+                    rowIsFull = false;
+                    break;
+                }
+            }
+            if (rowIsFull) {
+                clearRow(y, tiles);
+            }
+        }
+    }
+
+    public void clearRow(int y, Tile tiles[][]) {
+        Tile mas[] = new Tile[GamePanel.COLUMNS_COUNT];
+        tiles[y] = mas;
+        for (int y1 = 0; y1 < y; y1++) {
+            for (Tile tile : tiles[y1]) {
+                if (!isTileEmpty(tile)) tile.setY(tile.getY() + 1);
+            }
+        }
+        System.arraycopy(tiles, 0, tiles, 1, y);
+        Tile mas1[] = new Tile[GamePanel.COLUMNS_COUNT];
+        tiles[0] = mas1;
     }
 
     public boolean canShapeStepDown(Tile shape[][]) {
@@ -95,7 +141,7 @@ public class GameController {
      * Check if we can move our current shape LEFT or RIGHT.
      */
     public boolean canMoveShape(Direction direction, Tile shape[][]) {
-        if (isShapeTouchWall(direction, shape) || isShapeTochAnotherShape(direction, shape)) {
+        if (isShapeTouchWall(direction, shape) || isShapeTouchAnotherShape(direction, shape)) {
             return false;
 
         }
@@ -105,19 +151,24 @@ public class GameController {
     /**
      * Check if our current shape touch LEFT or RIGHT another shape.
      */
-    public boolean isShapeTochAnotherShape(Direction direction, Tile shape[][]) {
+    // TODO: 09.06.2017 замути провєрку на сдвіг вліво вправо (то шо закоментовано)
+    public boolean isShapeTouchAnotherShape(Direction direction, Tile shape[][]) {
         switch (direction) {
             case LEFT:
                 for (Tile[] shapeY : shape) {
                     Tile ourTile = shapeY[0];
                     if (!isTileEmpty(ourTile) && !isTileEmpty(gameMas[ourTile.getY()][ourTile.getX() + direction.getX()]))
                         return true;
+//                    if (isTileEmpty(ourTile) && !isTileEmpty(gameMas[ourTile.getY()][ourTile.getX()]))
+//                        return true;
                 }
             case RIGHT:
                 for (Tile[] shapeY : shape) {
                     Tile ourTile = shapeY[shapeY.length - 1];
                     if (!isTileEmpty(ourTile) && !isTileEmpty(gameMas[ourTile.getY()][ourTile.getX() + direction.getX()]))
                         return true;
+//                    if (isTileEmpty(ourTile) && !isTileEmpty(gameMas[ourTile.getY()][ourTile.getX()]))
+//                        return true;
                 }
         }
         return false;

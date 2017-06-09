@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 
 
 public class GamePanel extends JPanel implements ActionListener {
@@ -24,6 +25,16 @@ public class GamePanel extends JPanel implements ActionListener {
 
     private Timer timer = new Timer(300, this);
 
+    public static void main(String[] args) {
+        int[][] mas = new int[][]{{1, 1, 1}, {2, 2, 2}, {3, 3, 3}, {4, 4, 4}, {5, 5, 5}};
+        System.out.println(mas.length);
+        System.out.println(Arrays.deepToString(mas));
+        System.arraycopy(mas, 0, mas, 1, 3);
+        int s[]=new int[3];
+        mas[0]=s;
+        System.out.println(Arrays.deepToString(mas));
+
+    }
 
 
     public GamePanel() {

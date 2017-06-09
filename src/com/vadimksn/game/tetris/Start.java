@@ -29,11 +29,6 @@ public class Start extends JFrame {
 
                 switch (e.getKeyCode()) {
 
-				/*
-                 * Drop - When pressed, we check to see that the game is not
-				 * paused and that there is no drop cooldown, then set the
-				 * logic timer to run at a speed of 25 cycles per second.
-				 */
                     case KeyEvent.VK_LEFT:
                         if (gameController.canMoveShape(Direction.LEFT, gameController.getCurrentShape()))
                             gameController.move(Direction.LEFT, gameController.getCurrentShape());
