@@ -41,6 +41,8 @@ public class Start extends JFrame {
                         if (gameController.canShapeStepDown(gameController.getCurrentShape()))
                             gameController.stepDownShape(gameController.getCurrentShape());
                         break;
+                    case KeyEvent.VK_UP:
+                        gameController.rotate(gameController.getCurrentShape());
                 }
             }
 

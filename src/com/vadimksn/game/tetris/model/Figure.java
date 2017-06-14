@@ -6,8 +6,12 @@ public class Figure {
 
     public static Tile[][] getRandomFigure() {
         int i = new Random().nextInt(TileColor.values().length);
+        return getFigure(TileColor.values()[i]);
+    }
 
-        switch (TileColor.values()[i]) {
+    public static Tile[][] getFigure(TileColor tileColor) {
+
+        switch (tileColor) {
             case O:
                 return new Tile[][]{
                         {new Tile(0, 4, TileColor.O.getColor()), new Tile(0, 5, TileColor.O.getColor())},

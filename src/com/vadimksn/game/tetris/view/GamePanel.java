@@ -3,7 +3,6 @@ package com.vadimksn.game.tetris.view;
 
 import com.vadimksn.game.tetris.controller.GameController;
 import com.vadimksn.game.tetris.controller.PaintController;
-import com.vadimksn.game.tetris.model.Tile;
 
 import javax.swing.*;
 import java.awt.*;
