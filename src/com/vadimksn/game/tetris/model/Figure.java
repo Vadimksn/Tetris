@@ -1,5 +1,7 @@
 package com.vadimksn.game.tetris.model;
 
+import com.vadimksn.game.tetris.controller.GameController;
+
 import java.util.Random;
 
 public class Figure {
@@ -51,5 +53,32 @@ public class Figure {
         }
         return null;
     }
+
+    public static boolean isSecondRowIsFull(Tile[][] shape) {
+        for (Tile tile : shape[1]) {
+            if (GameController.isTileEmpty(tile)) return false;
+        }
+        return true;
+    }
+
+    public static boolean isFirstRowIsFull(Tile[][] shape) {
+        for (Tile tile : shape[0]) {
+            if (GameController.isTileEmpty(tile)) return false;
+        }
+        return true;
+    }
+    public static boolean isFirstColumnIsFull(Tile[][] shape) {
+        for (Tile[] shapeY : shape) {
+            if (GameController.isTileEmpty(shapeY[0])) return false;
+        }
+        return true;
+    }
+    public static boolean isSecondColumnIsFull(Tile[][] shape) {
+        for (Tile[] shapeY : shape) {
+            if (GameController.isTileEmpty(shapeY[1])) return false;
+        }
+        return true;
+    }
+
 
 }

@@ -18,6 +18,12 @@ public class PaintController {
         g.fill3DRect(tile.getX() * tileSize, tile.getY() * tileSize, tileSize, tileSize, true);
     }
 
+    public void moveAndPaintTile(int x, int pixelsByX, int y, int pixelsByY, Tile tile, Graphics g) {
+        int tileSize = GamePanel.TILE_SIZE;
+        g.setColor(tile.getTileColor());
+        g.fill3DRect((tile.getX() + x) * tileSize + pixelsByX, (tile.getY() + y) * tileSize + pixelsByY, tileSize, tileSize, true);
+    }
+
     public void paintGameMas(Tile gameMas[][], Graphics g) {
         for (Tile[] gameMasY : gameMas) {
             for (Tile tile : gameMasY) {
@@ -27,13 +33,19 @@ public class PaintController {
     }
 
     public void paintShape(Tile[][] shape, Graphics g) {
-        for (int y = 0; y < shape.length; y++) {
-            for (int x = 0; x < shape[y].length; x++) {
-                if (shape[y][x] != null) paintTile(shape[y][x], g);
+        for (Tile[] aShape : shape) {
+            for (Tile anAShape : aShape) {
+                if (anAShape != null) paintTile(anAShape, g);
             }
         }
+    }
 
-
+    public void moveAndPaintShape(int x, int pixelsByX, int y, int pixelsByY, Tile[][] shape, Graphics g) {
+        for (Tile[] shapeY : shape) {
+            for (Tile tile : shapeY) {
+                if (tile != null) moveAndPaintTile(x, pixelsByX, y, pixelsByY, tile, g);
+            }
+        }
     }
 
     public static PaintController getINSTANCE() {

@@ -3,13 +3,14 @@ package com.vadimksn.game.tetris.controller;
 import com.vadimksn.game.tetris.model.Figure;
 import com.vadimksn.game.tetris.model.Tile;
 import com.vadimksn.game.tetris.view.GamePanel;
-
-import java.util.Arrays;
+import com.vadimksn.game.tetris.view.LeftPanel;
 
 public class GameController {
     private static final GameController INSTANCE = new GameController();
     private Tile currentShape[][];
     private Tile gameMas[][];
+    public LeftPanel leftPanel = LeftPanel.getINSTANCE();
+
 
     private GameController() {
         gameMas = new Tile[GamePanel.ROW_COUNT][GamePanel.COLUMNS_COUNT];
@@ -23,7 +24,11 @@ public class GameController {
             } else {
                 writeShapeToGameMas(currentShape);
                 scanAndClearRows(currentShape, gameMas);
-                setCurrentShape(Figure.getRandomFigure());
+                setCurrentShape(leftPanel.getNextShape0());
+                leftPanel.setNextShape0(leftPanel.getNextShape1());
+                leftPanel.setNextShape1(leftPanel.getNextShape2());
+                leftPanel.setNextShape2(Figure.getRandomFigure());
+                leftPanel.repaint();
             }
         } else writeShapeToGameMas(currentShape);
     }
@@ -114,7 +119,7 @@ public class GameController {
         return false;
     }
 
-    public boolean isTileEmpty(Tile tile) {
+    public static boolean isTileEmpty(Tile tile) {
         return tile == null;
     }
 
@@ -172,14 +177,28 @@ public class GameController {
                 }
             }
             setCurrentShape(newShape);
-
+            // TODO: 20.06.2017 Доробити перевірку перед ROTATE
         } else if (shape[0].length == 3) {
-            if ((!isTileEmpty(shape[1][0]) && !isTileEmpty(shape[1][1]) && !isTileEmpty(shape[1][2]) ||
-                    !isTileEmpty(shape[1][0]) && !isTileEmpty(shape[1][1]) && isTileEmpty(shape[1][2]) ||
-                    isTileEmpty(shape[1][0]) && !isTileEmpty(shape[1][1]) && !isTileEmpty(shape[1][2]))
-                    && shape[1][1].getY() < GamePanel.ROW_COUNT - 1
-                    && isTileEmpty(gameMas[shape[1][1].getY() + 1][shape[1][1].getX()])
-                    && isTileEmpty(gameMas[shape[1][1].getY() + 1][shape[1][1].getX() + 1])) {
+            if (
+                    (Figure.isSecondRowIsFull(shape) && shape[1][1].getY() < GamePanel.ROW_COUNT - 1
+                            && isTileEmpty(gameMas[shape[1][1].getY() + 1][shape[1][1].getX()])
+                            && isTileEmpty(gameMas[shape[1][1].getY() - 1][shape[1][1].getX()])
+                            && ((!isTileEmpty(shape[0][0])
+                            && isTileEmpty(gameMas[shape[1][1].getY() - 1][shape[1][1].getX() + 1]))
+                            || !isTileEmpty(shape[0][1])
+                            || (!isTileEmpty(shape[0][2])
+                            && isTileEmpty(gameMas[shape[1][1].getY() + 1][shape[1][1].getX() + 1])))
+                    )
+                            || (!isTileEmpty(shape[1][0]) && !isTileEmpty(shape[1][1]) && isTileEmpty(shape[1][2])
+                            && shape[1][1].getY() < GamePanel.ROW_COUNT - 1
+                            && isTileEmpty(gameMas[shape[1][1].getY()][shape[1][1].getX() + 1])
+                            && isTileEmpty(gameMas[shape[1][1].getY() + 1][shape[1][1].getX() + 1]))
+
+                            || (isTileEmpty(shape[1][0]) && !isTileEmpty(shape[1][1]) && !isTileEmpty(shape[1][2])
+                            && shape[1][1].getY() < GamePanel.ROW_COUNT - 1
+                            && isTileEmpty(gameMas[shape[1][1].getY() + 1][shape[1][1].getX()])
+                            && isTileEmpty(gameMas[shape[1][1].getY() - 1][shape[1][1].getX() + 1]))
+                    ) {
                 int y = 0;
                 int x = 2;
                 int j = 1;
@@ -204,10 +223,14 @@ public class GameController {
 
                 }
                 setCurrentShape(newShape);
-            } else if (!isTileEmpty(shape[0][0]) && !isTileEmpty(shape[0][1]) && !isTileEmpty(shape[0][2])
-                    && shape[0][1].getX() > 0
+            } else if (Figure.isFirstRowIsFull(shape) && shape[0][1].getY() > 0
                     && isTileEmpty(gameMas[shape[0][1].getY() - 1][shape[0][1].getX()])
-                    && isTileEmpty(gameMas[shape[0][1].getY() - 1][shape[0][1].getX() + 1])) {
+                    && isTileEmpty(gameMas[shape[0][1].getY() + 1][shape[0][1].getX()])
+                    && ((!isTileEmpty(shape[1][0])
+                    && isTileEmpty(gameMas[shape[0][1].getY() - 1][shape[0][1].getX() - 1]))
+                    || !isTileEmpty(shape[1][1])
+                    || (!isTileEmpty(shape[1][2])
+                    && isTileEmpty(gameMas[shape[0][1].getY() + 1][shape[0][1].getX() - 1])))) {
                 int y = -1;
                 int x = 1;
                 int j = 1;
@@ -232,10 +255,16 @@ public class GameController {
                 setCurrentShape(newShape);
             }
         } else if (shape.length == 3) {
-            if (!isTileEmpty(shape[0][0]) && !isTileEmpty(shape[1][0]) && !isTileEmpty(shape[2][0])
+            if (Figure.isFirstColumnIsFull(shape)
                     && shape[1][0].getX() > 0
+                    && isTileEmpty(gameMas[shape[1][0].getY()][shape[1][0].getX() + 1])
                     && isTileEmpty(gameMas[shape[1][0].getY()][shape[1][0].getX() - 1])
-                    && isTileEmpty(gameMas[shape[1][0].getY() + 1][shape[1][0].getX() - 1])) {
+
+                    && ((!isTileEmpty(shape[0][1])
+                    && isTileEmpty(gameMas[shape[1][0].getY() + 1][shape[1][0].getX() + 1]))
+                    || !isTileEmpty(shape[1][1])
+                    || (!isTileEmpty(shape[2][1])
+                    && isTileEmpty(gameMas[shape[1][0].getY() + 1][shape[1][0].getX() - 1])))) {
                 int y = 1;
                 int x = 1;
                 int j = 2;
@@ -260,10 +289,15 @@ public class GameController {
                     j--;
                 }
                 setCurrentShape(newShape);
-            } else if (!isTileEmpty(shape[0][1]) && !isTileEmpty(shape[1][1]) && !isTileEmpty(shape[2][1])
+            } else if (Figure.isSecondColumnIsFull(shape)
                     && shape[1][1].getX() < GamePanel.COLUMNS_COUNT - 1
-                    && isTileEmpty(gameMas[shape[0][1].getY() - 1][shape[0][1].getX()])
-                    && isTileEmpty(gameMas[shape[0][1].getY() - 1][shape[0][1].getX() + 1])) {
+                    && isTileEmpty(gameMas[shape[1][1].getY()][shape[1][1].getX() + 1])
+                    && isTileEmpty(gameMas[shape[1][1].getY()][shape[1][1].getX() - 1])
+                    && ((!isTileEmpty(shape[0][0])
+                    && isTileEmpty(gameMas[shape[1][1].getY() - 1][shape[1][1].getX() + 1]))
+                    || !isTileEmpty(shape[1][0])
+                    || (!isTileEmpty(shape[2][0])
+                    && isTileEmpty(gameMas[shape[1][1].getY() - 1][shape[1][1].getX() - 1])))) {
                 int y = 0;
                 int x = 2;
                 int j = 2;
@@ -289,11 +323,14 @@ public class GameController {
                 }
                 setCurrentShape(newShape);
 
-            } else if ((!isTileEmpty(shape[0][0]) && !isTileEmpty(shape[1][0]) && isTileEmpty(shape[2][0])
-                    || isTileEmpty(shape[0][0]) && !isTileEmpty(shape[1][0]) && !isTileEmpty(shape[2][0]))
-                    && shape[1][0].getX() > 0
+            } else if (!isTileEmpty(shape[1][0]) && shape[1][0].getX() > 0
+                    && ((!isTileEmpty(shape[0][0]) && isTileEmpty(shape[2][0])
+                    && isTileEmpty(gameMas[shape[1][0].getY()][shape[1][0].getX() - 1])
+                    && isTileEmpty(gameMas[shape[1][0].getY() - 1][shape[1][0].getX() + 1]))
+
+                    || isTileEmpty(shape[0][0]) && !isTileEmpty(shape[2][0])
                     && isTileEmpty(gameMas[shape[1][0].getY() - 1][shape[1][0].getX() - 1])
-                    && isTileEmpty(gameMas[shape[1][0].getY()][shape[1][0].getX() - 1])) {
+                    && isTileEmpty(gameMas[shape[1][0].getY() - 1][shape[1][0].getX()]))) {
                 int y = 1;
                 int x = -1;
                 int j = 0;
@@ -316,8 +353,6 @@ public class GameController {
                     j++;
                 }
                 setCurrentShape(newShape);
-
-
             }
         }
     }
@@ -328,7 +363,6 @@ public class GameController {
     public boolean canMoveShape(Direction direction, Tile shape[][]) {
         if (isShapeTouchWall(direction, shape) || isShapeTouchAnotherShape(direction, shape)) {
             return false;
-
         }
         return true;
     }
@@ -336,7 +370,6 @@ public class GameController {
     /**
      * Check if our current shape touch LEFT or RIGHT another shape.
      */
-    // TODO: 09.06.2017 бігти по У шукати не null по Х (то шо закоментовано)
     public boolean isShapeTouchAnotherShape(Direction direction, Tile shape[][]) {
         switch (direction) {
             case LEFT:
@@ -345,11 +378,6 @@ public class GameController {
                         if (!isTileEmpty(tile) && !isTileEmpty(gameMas[tile.getY()][tile.getX() + direction.getX()]))
                             return true;
                     }
-//                    Tile ourTile = shapeY[0];
-//                    if (!isTileEmpty(ourTile) && !isTileEmpty(gameMas[ourTile.getY()][ourTile.getX() + direction.getX()]))
-//                        return true;
-////                    if (isTileEmpty(ourTile) && !isTileEmpty(gameMas[ourTile.getY()][ourTile.getX()]))
-////                        return true;
                 }
             case RIGHT:
                 for (Tile[] shapeY : shape) {
@@ -357,14 +385,9 @@ public class GameController {
                         if (!isTileEmpty(shapeY[x])) {
                             Tile tile = shapeY[x];
                             if (!isTileEmpty(gameMas[tile.getY()][tile.getX() + direction.getX()]))
-                            return true;
+                                return true;
                         }
                     }
-//                    Tile ourTile = shapeY[shapeY.length - 1];
-//                    if (!isTileEmpty(ourTile) && !isTileEmpty(gameMas[ourTile.getY()][ourTile.getX() + direction.getX()]))
-//                        return true;
-////                    if (isTileEmpty(ourTile) && !isTileEmpty(gameMas[ourTile.getY()][ourTile.getX()]))
-////                        return true;
                 }
         }
         return false;
