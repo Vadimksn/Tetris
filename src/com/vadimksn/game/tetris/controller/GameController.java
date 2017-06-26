@@ -4,17 +4,21 @@ import com.vadimksn.game.tetris.model.Figure;
 import com.vadimksn.game.tetris.model.Tile;
 import com.vadimksn.game.tetris.view.GamePanel;
 import com.vadimksn.game.tetris.view.LeftPanel;
+import com.vadimksn.game.tetris.view.RightPanel;
 
 public class GameController {
     private static final GameController INSTANCE = new GameController();
+    private final int[] SCORES = {100, 300, 700, 1500};
+    private int score;
     private Tile currentShape[][];
     private Tile gameMas[][];
-    public LeftPanel leftPanel = LeftPanel.getINSTANCE();
+    private LeftPanel leftPanel;
 
 
     private GameController() {
         gameMas = new Tile[GamePanel.ROW_COUNT][GamePanel.COLUMNS_COUNT];
         currentShape = Figure.getRandomFigure();
+        leftPanel = LeftPanel.getINSTANCE();
     }
 
     public void start() {
@@ -25,10 +29,7 @@ public class GameController {
                 writeShapeToGameMas(currentShape);
                 scanAndClearRows(currentShape, gameMas);
                 setCurrentShape(leftPanel.getNextShape0());
-                leftPanel.setNextShape0(leftPanel.getNextShape1());
-                leftPanel.setNextShape1(leftPanel.getNextShape2());
-                leftPanel.setNextShape2(Figure.getRandomFigure());
-                leftPanel.repaint();
+                leftPanel.update();
             }
         } else writeShapeToGameMas(currentShape);
     }
@@ -56,16 +57,16 @@ public class GameController {
     public void scanAndClearRows(Tile shape[][], Tile tiles[][]) {
         int firstY = 0;
         int lastY = 0;
+        int countFilledRows = -1;
+
         for (Tile tile : shape[0]) {
             if (!isTileEmpty(tile)) {
                 firstY = tile.getY();
-                break;
             }
         }
         for (Tile tile : shape[shape.length - 1]) {
             if (!isTileEmpty(tile)) {
                 lastY = tile.getY();
-                break;
             }
         }
         for (int y = firstY; y < lastY + 1; y++) {
@@ -73,12 +74,16 @@ public class GameController {
             for (int x = 0; x < tiles[y].length; x++) {
                 if (isTileEmpty(tiles[y][x])) {
                     rowIsFull = false;
-                    break;
                 }
             }
             if (rowIsFull) {
                 clearRow(y, tiles);
+                countFilledRows++;
             }
+        }
+        if (countFilledRows > -1) {
+            score += SCORES[countFilledRows];
+            RightPanel.getINSTANCE().repaint();
         }
     }
 
@@ -436,5 +441,13 @@ public class GameController {
 
     public void setCurrentShape(Tile[][] currentShape) {
         this.currentShape = currentShape;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 }

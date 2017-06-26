@@ -34,8 +34,8 @@ public class LeftPanel extends JPanel {
         g.translate(BORDER_SIZE, BORDER_SIZE);
 
         g.setColor(BASE_LIGHT_COLOR);
-        Font next = new Font("Arial", Font.CENTER_BASELINE, 20);
-        g.setFont(next);
+        Font font = new Font("Arial", Font.CENTER_BASELINE, 20);
+        g.setFont(font);
         g.drawString("NEXT", TILE_SIZE + 10, TILE_SIZE - 5);
 
         g.setColor(BASE_LIGHT_COLOR2);
@@ -48,6 +48,13 @@ public class LeftPanel extends JPanel {
 
         g.setColor(BASE_LIGHT_COLOR);
         g.drawRoundRect(0, TILE_SIZE, TILE_SIZE * COLUMNS_COUNT, TILE_SIZE * ROW_COUNT, 10, 10);
+    }
+
+    public void update(){
+        setNextShape0(nextShape1);
+        setNextShape1(nextShape2);
+        setNextShape2(Figure.getRandomFigure());
+        repaint();
     }
 
     public void paintNextShape(int y, Tile[][] nextShape, Graphics g) {

@@ -14,7 +14,7 @@ import java.awt.event.KeyEvent;
 public class Start extends JFrame {
     public GamePanel gamePanel = new GamePanel();
     public LeftPanel leftPanel =  LeftPanel.getINSTANCE();
-    public RightPanel rightPanel = new RightPanel();
+    public RightPanel rightPanel = RightPanel.getINSTANCE();
 
     public Start() {
         setLayout(new BorderLayout());
