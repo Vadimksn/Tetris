@@ -10,12 +10,15 @@ public class GameController {
     private static final GameController INSTANCE = new GameController();
     private final int[] SCORES = {100, 300, 700, 1500};
     private int score;
+    private int lines;
+    private int level;
     private Tile currentShape[][];
     private Tile gameMas[][];
     private LeftPanel leftPanel;
 
 
     private GameController() {
+        level = 1;
         gameMas = new Tile[GamePanel.ROW_COUNT][GamePanel.COLUMNS_COUNT];
         currentShape = Figure.getRandomFigure();
         leftPanel = LeftPanel.getINSTANCE();
@@ -58,6 +61,7 @@ public class GameController {
         int firstY = 0;
         int lastY = 0;
         int countFilledRows = -1;
+        int oldLines = lines;
 
         for (Tile tile : shape[0]) {
             if (!isTileEmpty(tile)) {
@@ -79,9 +83,11 @@ public class GameController {
             if (rowIsFull) {
                 clearRow(y, tiles);
                 countFilledRows++;
+                lines++;
             }
         }
         if (countFilledRows > -1) {
+            level = 1 + lines / 10;
             score += SCORES[countFilledRows];
             RightPanel.getINSTANCE().repaint();
         }
@@ -449,5 +455,21 @@ public class GameController {
 
     public void setScore(int score) {
         this.score = score;
+    }
+
+    public int getLines() {
+        return lines;
+    }
+
+    public void setLines(int lines) {
+        this.lines = lines;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
     }
 }

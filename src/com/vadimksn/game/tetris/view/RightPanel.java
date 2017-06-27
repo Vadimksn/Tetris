@@ -35,6 +35,8 @@ public class RightPanel extends JPanel {
 
         g.setColor(BASE_LIGHT_COLOR);
         g.drawString("" + GameController.getINSTANCE().getScore(), TILE_SIZE * 2, TILE_SIZE * 2 - BORDER_SIZE);
+        g.drawString("" + GameController.getINSTANCE().getLines(), TILE_SIZE * 2, TILE_SIZE * 4 - BORDER_SIZE);
+        g.drawString("" + GameController.getINSTANCE().getLevel(), TILE_SIZE * 2, TILE_SIZE * 6 - BORDER_SIZE);
         g.drawRoundRect(0, TILE_SIZE, PANEL_WIDTH - BORDER_SIZE * 3, TILE_SIZE, 10, 10);
         g.drawRoundRect(0, TILE_SIZE * 3, PANEL_WIDTH - BORDER_SIZE * 3, TILE_SIZE, 10, 10);
         g.drawRoundRect(0, TILE_SIZE * 5, PANEL_WIDTH - BORDER_SIZE * 3, TILE_SIZE, 10, 10);
