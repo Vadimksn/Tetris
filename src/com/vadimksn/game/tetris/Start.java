@@ -12,18 +12,20 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 public class Start extends JFrame {
-    public GamePanel gamePanel = new GamePanel();
-    public LeftPanel leftPanel =  LeftPanel.getINSTANCE();
-    public RightPanel rightPanel = RightPanel.getINSTANCE();
+    private GamePanel gamePanel = GamePanel.getINSTANCE();
+    private GameController gameController = GameController.getINSTANCE();
+    private RightPanel rightPanel = RightPanel.getINSTANCE();
+    private LeftPanel leftPanel = LeftPanel.getINSTANCE();
+
 
     public Start() {
         setLayout(new BorderLayout());
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
 
-        add(gamePanel,BorderLayout.CENTER);
-        add(leftPanel,BorderLayout.WEST);
-        add(rightPanel,BorderLayout.EAST);
+        add(gamePanel, BorderLayout.CENTER);
+        add(leftPanel, BorderLayout.WEST);
+        add(rightPanel, BorderLayout.EAST);
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
@@ -32,10 +34,8 @@ public class Start extends JFrame {
 
             @Override
             public void keyPressed(KeyEvent e) {
-                GameController gameController = GameController.getINSTANCE();
 
                 switch (e.getKeyCode()) {
-
                     case KeyEvent.VK_LEFT:
                         if (gameController.canMoveShape(Direction.LEFT, gameController.getCurrentShape()))
                             gameController.move(Direction.LEFT, gameController.getCurrentShape());
@@ -54,6 +54,35 @@ public class Start extends JFrame {
                     case KeyEvent.VK_UP:
                         gameController.rotate(gameController.getCurrentShape());
                         gamePanel.repaint();
+                        break;
+                    case KeyEvent.VK_P:
+                        if (gameController.isGameRunning()) {
+                            gameController.setPaused(!gameController.isPaused());
+                        }
+                        break;
+                    case KeyEvent.VK_R:
+                        if (gameController.isGameRunning()) {
+                            gamePanel.getTimer().setDelay(gameController.getGameSpeed());
+                            gameController.resetGame();
+                            gameController.setGameRunning(true);
+                            gamePanel.repaint();
+                            leftPanel.repaint();
+                            rightPanel.repaint();
+                        }
+                        break;
+                    case KeyEvent.VK_ENTER:
+                        if (!gameController.isGameRunning() && !gameController.isGameOver()) {
+                            gameController.resetGame();
+                            gameController.setGameRunning(true);
+                            leftPanel.repaint();
+                            gamePanel.repaint();
+                        } else if (!gameController.isGameRunning() && gameController.isGameOver()) {
+                            gameController.resetGame();
+                            gameController.setGameRunning(true);
+                            leftPanel.repaint();
+                            rightPanel.repaint();
+                        }
+                        break;
                 }
             }
 

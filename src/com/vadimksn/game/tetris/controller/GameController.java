@@ -9,34 +9,68 @@ import com.vadimksn.game.tetris.view.RightPanel;
 public class GameController {
     private static final GameController INSTANCE = new GameController();
     private final int[] SCORES = {100, 300, 700, 1500};
+    private final int gameSpeed = 500;
+    private final int acceleration = 20;
+    private Tile currentShape[][];
+    private Tile[][] nextShape0;
+    private Tile[][] nextShape1;
+    private Tile[][] nextShape2;
+    private Tile gameMas[][];
+    private boolean isPaused;
+    private boolean isGameOver;
+    private boolean isGameRunning;
     private int score;
     private int lines;
     private int level;
-    private Tile currentShape[][];
-    private Tile gameMas[][];
-    private LeftPanel leftPanel;
 
 
     private GameController() {
-        level = 1;
+        resetGame();
+    }
+
+    public void resetGame() {
         gameMas = new Tile[GamePanel.ROW_COUNT][GamePanel.COLUMNS_COUNT];
         currentShape = Figure.getRandomFigure();
-        leftPanel = LeftPanel.getINSTANCE();
+        nextShape0 = Figure.getRandomFigure();
+        nextShape1 = Figure.getRandomFigure();
+        nextShape2 = Figure.getRandomFigure();
+        isPaused = false;
+        isGameRunning = false;
+        isGameOver = false;
+        score = 0;
+        lines = 0;
+        level = 1;
+
+
     }
 
     public void start() {
-        if (!gameOver()) {
-            if (canShapeStepDown(currentShape)) {
-                stepDownShape(currentShape);
-            } else {
-                writeShapeToGameMas(currentShape);
-                scanAndClearRows(currentShape, gameMas);
-                setCurrentShape(leftPanel.getNextShape0());
-                leftPanel.update();
+        if (!isGameOver && isGameRunning) {
+            if (!isPaused) {
+                if (canShapeStepDown(currentShape)) {
+                    stepDownShape(currentShape);
+                } else {
+                    writeShapeToGameMas(currentShape);
+                    scanAndClearRows(currentShape, gameMas);
+                    setCurrentShape(nextShape0);
+                    updateNextShapes();
+                    if (gameOver()) {
+                        isGameOver = true;
+                        isGameRunning = false;
+                    }
+                }
             }
         } else writeShapeToGameMas(currentShape);
     }
 
+    public void updateNextShapes() {
+        nextShape0 = nextShape1;
+        nextShape1 = nextShape2;
+        nextShape2 = Figure.getRandomFigure();
+        LeftPanel.getINSTANCE().repaint();
+    }
+
+    // TODO: 29.06.2017 доробити
     public boolean gameOver() {
         if (!isTileEmpty(currentShape[0][0]) && currentShape[0][0].getX() == 3) {
             if (!isTileEmpty(gameMas[1][3])) return true;
@@ -61,7 +95,6 @@ public class GameController {
         int firstY = 0;
         int lastY = 0;
         int countFilledRows = -1;
-        int oldLines = lines;
 
         for (Tile tile : shape[0]) {
             if (!isTileEmpty(tile)) {
@@ -89,6 +122,9 @@ public class GameController {
         if (countFilledRows > -1) {
             level = 1 + lines / 10;
             score += SCORES[countFilledRows];
+            if (gameSpeed + acceleration - acceleration * level >= 20) {
+                GamePanel.getINSTANCE().getTimer().setDelay(gameSpeed + acceleration - acceleration * level);
+            }
             RightPanel.getINSTANCE().repaint();
         }
     }
@@ -188,7 +224,6 @@ public class GameController {
                 }
             }
             setCurrentShape(newShape);
-            // TODO: 20.06.2017 Доробити перевірку перед ROTATE
         } else if (shape[0].length == 3) {
             if (
                     (Figure.isSecondRowIsFull(shape) && shape[1][1].getY() < GamePanel.ROW_COUNT - 1
@@ -216,22 +251,11 @@ public class GameController {
                 int i = 0;
                 Tile newShape[][] = new Tile[3][2];
                 for (Tile[] shapeY : shape) {
-                    for (Tile tile : shapeY) {
-                        if (!isTileEmpty(tile)) {
-                            tile.setX(tile.getX() + x);
-                            tile.setY(tile.getY() + y);
-                            newShape[i][j] = tile;
-                        }
-                        i++;
-                        y++;
-                        x--;
-                    }
+                    moveTiles(x, y, i, j, shapeY, newShape);
                     i = 0;
                     j--;
-
                     x = 1;
                     y = -1;
-
                 }
                 setCurrentShape(newShape);
             } else if (Figure.isFirstRowIsFull(shape) && shape[0][1].getY() > 0
@@ -248,16 +272,7 @@ public class GameController {
                 int i = 0;
                 Tile newShape[][] = new Tile[3][2];
                 for (Tile[] shapeY : shape) {
-                    for (Tile tile : shapeY) {
-                        if (!isTileEmpty(tile)) {
-                            tile.setX(tile.getX() + x);
-                            tile.setY(tile.getY() + y);
-                            newShape[i][j] = tile;
-                        }
-                        i++;
-                        y++;
-                        x--;
-                    }
+                    moveTiles(x, y, i, j, shapeY, newShape);
                     x = 0;
                     y = -2;
                     i = 0;
@@ -322,8 +337,8 @@ public class GameController {
                             newShape[i][j] = tile;
                         }
                         y++;
-                        x--;
                         i++;
+                        x--;
                     }
                     if (y == 2) {
                         y = -1;
@@ -365,6 +380,19 @@ public class GameController {
                 }
                 setCurrentShape(newShape);
             }
+        }
+    }
+
+    private void moveTiles(int x, int y, int i, int j, Tile[] tiles, Tile[][] newShape) {
+        for (Tile tile : tiles) {
+            if (!isTileEmpty(tile)) {
+                tile.setX(tile.getX() + x);
+                tile.setY(tile.getY() + y);
+                newShape[i][j] = tile;
+            }
+            x--;
+            y++;
+            i++;
         }
     }
 
@@ -471,5 +499,57 @@ public class GameController {
 
     public void setLevel(int level) {
         this.level = level;
+    }
+
+    public boolean isPaused() {
+        return isPaused;
+    }
+
+    public void setPaused(boolean paused) {
+        isPaused = paused;
+    }
+
+    public boolean isGameOver() {
+        return isGameOver;
+    }
+
+    public void setGameOver(boolean gameOver) {
+        isGameOver = gameOver;
+    }
+
+    public Tile[][] getNextShape0() {
+        return nextShape0;
+    }
+
+    public void setNextShape0(Tile[][] nextShape0) {
+        this.nextShape0 = nextShape0;
+    }
+
+    public Tile[][] getNextShape1() {
+        return nextShape1;
+    }
+
+    public void setNextShape1(Tile[][] nextShape1) {
+        this.nextShape1 = nextShape1;
+    }
+
+    public Tile[][] getNextShape2() {
+        return nextShape2;
+    }
+
+    public void setNextShape2(Tile[][] nextShape2) {
+        this.nextShape2 = nextShape2;
+    }
+
+    public boolean isGameRunning() {
+        return isGameRunning;
+    }
+
+    public void setGameRunning(boolean gameRunning) {
+        isGameRunning = gameRunning;
+    }
+
+    public int getGameSpeed() {
+        return gameSpeed;
     }
 }

@@ -1,7 +1,7 @@
 package com.vadimksn.game.tetris.view;
 
+import com.vadimksn.game.tetris.controller.GameController;
 import com.vadimksn.game.tetris.controller.PaintController;
-import com.vadimksn.game.tetris.model.Figure;
 import com.vadimksn.game.tetris.model.Tile;
 
 import javax.swing.*;
@@ -18,9 +18,9 @@ public class LeftPanel extends JPanel {
     private static final Color BASE_LIGHT_COLOR = BaseColors.BASE_LIGHT_COLOR.getColor();
     private static final Color BASE_LIGHT_COLOR2 = BaseColors.BASE_LIGHT_COLOR2.getColor();
     private static final LeftPanel INSTANCE = new LeftPanel();
-    private Tile[][] nextShape0 = Figure.getRandomFigure();
-    private Tile[][] nextShape1 = Figure.getRandomFigure();
-    private Tile[][] nextShape2 = Figure.getRandomFigure();
+    private static final Font SMALL_FONT = new Font("Tahoma", Font.BOLD, 12);
+    private static final Font LARGE_FONT = new Font("Tahoma", Font.BOLD, 14);
+    private GameController gameController = GameController.getINSTANCE();
 
 
     private LeftPanel() {
@@ -34,28 +34,90 @@ public class LeftPanel extends JPanel {
         g.translate(BORDER_SIZE, BORDER_SIZE);
 
         g.setColor(BASE_LIGHT_COLOR);
-        Font font = new Font("Arial", Font.CENTER_BASELINE, 20);
-        g.setFont(font);
-        g.drawString("NEXT", TILE_SIZE + 10, TILE_SIZE - 5);
-
+        g.setFont(LARGE_FONT);
+        g.drawString("Next", TILE_SIZE * 2 - 5, -5);
+//        g.drawLine(0, 0, TILE_SIZE * COLUMNS_COUNT, 0);
+        g.drawLine(0, TILE_SIZE * 6, TILE_SIZE * COLUMNS_COUNT, TILE_SIZE * 6);
         g.setColor(BASE_LIGHT_COLOR2);
-//        g.drawLine(0, TILE_SIZE * 4, TILE_SIZE * COLUMNS_COUNT, TILE_SIZE * 4);
-        g.drawLine(0, TILE_SIZE * 7, TILE_SIZE * COLUMNS_COUNT, TILE_SIZE * 7);
-
-        paintNextShape(7, nextShape0, g);
-        paintNextShape(4, nextShape1, g);
-        paintNextShape(1, nextShape2, g);
-
+        g.drawLine(0, TILE_SIZE * 3, TILE_SIZE * COLUMNS_COUNT, TILE_SIZE * 3);
+        if (gameController.isGameRunning()) {
+            paintNextShape(6, gameController.getNextShape0(), g);
+            paintNextShape(3, gameController.getNextShape1(), g);
+            paintNextShape(0, gameController.getNextShape2(), g);
+        }
         g.setColor(BASE_LIGHT_COLOR);
-        g.drawRoundRect(0, TILE_SIZE, TILE_SIZE * COLUMNS_COUNT, TILE_SIZE * ROW_COUNT, 10, 10);
+        g.drawRoundRect(0, 0, TILE_SIZE * COLUMNS_COUNT, TILE_SIZE * ROW_COUNT, 10, 10);
+
+
+        int offsetByY = TILE_SIZE * 11;
+        g.drawRoundRect(-15, offsetByY, TILE_SIZE * COLUMNS_COUNT + 30, TILE_SIZE * 19 - offsetByY, 10, 10);
+//        g.drawString("High Scores", TILE_SIZE, TILE_SIZE * 11 - 5);
+        g.drawString("HIGH SCORES", TILE_SIZE - 12, offsetByY - 5);
+//        g.drawLine(-15, offsetByY, TILE_SIZE * COLUMNS_COUNT + 15, offsetByY);
+
+
+        g.setFont(SMALL_FONT);
+        g.drawString("Raman", -5, (offsetByY += TILE_SIZE) - 5);
+        g.drawString("1000000", TILE_SIZE * 3, offsetByY - 5);
+        g.setColor(BASE_LIGHT_COLOR2);
+        g.drawLine(TILE_SIZE * 3 - 10, offsetByY, TILE_SIZE * 3 - 10, offsetByY - 5);
+        g.drawLine(-10, offsetByY, TILE_SIZE * COLUMNS_COUNT + 10, offsetByY);
+        g.setColor(BASE_LIGHT_COLOR);
+        g.drawString("Batya Oleg", -5, (offsetByY += TILE_SIZE) - 5);
+        g.drawString("100000", TILE_SIZE * 3, offsetByY - 5);
+        g.setColor(BASE_LIGHT_COLOR2);
+        g.drawLine(TILE_SIZE * 3 - 10, offsetByY, TILE_SIZE * 3 - 10, offsetByY - 5);
+        g.drawLine(-10, offsetByY, TILE_SIZE * COLUMNS_COUNT + 10, offsetByY);
+        g.setColor(BASE_LIGHT_COLOR);
+        g.drawString("Vadya", -5, (offsetByY += TILE_SIZE) - 5);
+        g.drawString("10000", TILE_SIZE * 3, offsetByY - 5);
+        g.setColor(BASE_LIGHT_COLOR2);
+        g.drawLine(TILE_SIZE * 3 - 10, offsetByY, TILE_SIZE * 3 - 10, offsetByY - 5);
+        g.drawLine(-10, offsetByY, TILE_SIZE * COLUMNS_COUNT + 10, offsetByY);
+        g.setColor(BASE_LIGHT_COLOR);
+        g.drawString("Imant", -5, (offsetByY += TILE_SIZE) - 5);
+        g.drawString("1000", TILE_SIZE * 3, offsetByY - 5);
+        g.setColor(BASE_LIGHT_COLOR2);
+        g.drawLine(TILE_SIZE * 3 - 10, offsetByY, TILE_SIZE * 3 - 10, offsetByY - 5);
+        g.drawLine(-10, offsetByY, TILE_SIZE * COLUMNS_COUNT + 10, offsetByY);
+        g.setColor(BASE_LIGHT_COLOR);
+        g.drawString("Vasya", -5, (offsetByY += TILE_SIZE) - 5);
+        g.drawString("100", TILE_SIZE * 3, offsetByY - 5);
+        g.setColor(BASE_LIGHT_COLOR2);
+        g.drawLine(TILE_SIZE * 3 - 10, offsetByY, TILE_SIZE * 3 - 10, offsetByY - 5);
+        g.drawLine(-10, offsetByY, TILE_SIZE * COLUMNS_COUNT + 10, offsetByY);
+        g.setColor(BASE_LIGHT_COLOR);
+        g.drawString("Vasya", -5, (offsetByY += TILE_SIZE) - 5);
+        g.drawString("100", TILE_SIZE * 3, offsetByY - 5);
+        g.setColor(BASE_LIGHT_COLOR2);
+        g.drawLine(TILE_SIZE * 3 - 10, offsetByY, TILE_SIZE * 3 - 10, offsetByY - 5);
+        g.drawLine(-10, offsetByY, TILE_SIZE * COLUMNS_COUNT + 10, offsetByY);
+        g.setColor(BASE_LIGHT_COLOR);
+        g.drawString("Vasya", -5, (offsetByY += TILE_SIZE) - 5);
+        g.drawString("100", TILE_SIZE * 3, offsetByY - 5);
+        g.setColor(BASE_LIGHT_COLOR2);
+        g.drawLine(TILE_SIZE * 3 - 10, offsetByY, TILE_SIZE * 3 - 10, offsetByY - 5);
+        g.drawLine(-10, offsetByY, TILE_SIZE * COLUMNS_COUNT + 10, offsetByY);
+        g.setColor(BASE_LIGHT_COLOR);
+        g.drawString("Vasya", -5, (offsetByY += TILE_SIZE) - 5);
+        g.drawString("100", TILE_SIZE * 3, offsetByY - 5);
+        g.setColor(BASE_LIGHT_COLOR2);
+        g.drawLine(TILE_SIZE * 3 - 10, offsetByY, TILE_SIZE * 3 - 10, offsetByY - 5);
+        g.setColor(BASE_LIGHT_COLOR);
+        g.drawLine(-10, offsetByY, TILE_SIZE * COLUMNS_COUNT + 10, offsetByY);
+
+
+//        g.drawLine(TILE_SIZE * 3 - 10, TILE_SIZE * 13, TILE_SIZE * 3 - 10, TILE_SIZE * 13 - 5);
+//        g.drawLine(-10, TILE_SIZE * 13, TILE_SIZE * COLUMNS_COUNT + 10, TILE_SIZE * 13);
+//        g.drawLine(TILE_SIZE * 3 - 10, TILE_SIZE * 14, TILE_SIZE * 3 - 10, TILE_SIZE * 14 - 5);
+//        g.drawLine(-10, TILE_SIZE * 14, TILE_SIZE * COLUMNS_COUNT + 10, TILE_SIZE * 14);
+//        g.drawLine(TILE_SIZE * 3 - 10, TILE_SIZE * 15, TILE_SIZE * 3 - 10, TILE_SIZE * 15 - 5);
+//        g.drawLine(-10, TILE_SIZE * 15, TILE_SIZE * COLUMNS_COUNT + 10, TILE_SIZE * 15);
+//        g.drawLine(TILE_SIZE * 3 - 10, TILE_SIZE * 16, TILE_SIZE * 3 - 10, TILE_SIZE * 16 - 5);
+//        g.drawLine(-10, TILE_SIZE * 16, TILE_SIZE * COLUMNS_COUNT + 10, TILE_SIZE * 16);
+
     }
 
-    public void update(){
-        setNextShape0(nextShape1);
-        setNextShape1(nextShape2);
-        setNextShape2(Figure.getRandomFigure());
-        repaint();
-    }
 
     public void paintNextShape(int y, Tile[][] nextShape, Graphics g) {
         if (nextShape[0].length == 2) {
@@ -105,29 +167,5 @@ public class LeftPanel extends JPanel {
 
     public static LeftPanel getINSTANCE() {
         return INSTANCE;
-    }
-
-    public Tile[][] getNextShape0() {
-        return nextShape0;
-    }
-
-    public void setNextShape0(Tile[][] nextShape0) {
-        this.nextShape0 = nextShape0;
-    }
-
-    public Tile[][] getNextShape1() {
-        return nextShape1;
-    }
-
-    public void setNextShape1(Tile[][] nextShape1) {
-        this.nextShape1 = nextShape1;
-    }
-
-    public Tile[][] getNextShape2() {
-        return nextShape2;
-    }
-
-    public void setNextShape2(Tile[][] nextShape2) {
-        this.nextShape2 = nextShape2;
     }
 }
