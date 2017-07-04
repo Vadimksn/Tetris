@@ -1,6 +1,7 @@
 package com.vadimksn.game.tetris.controller;
 
 import com.vadimksn.game.tetris.model.Figure;
+import com.vadimksn.game.tetris.model.Player;
 import com.vadimksn.game.tetris.model.Tile;
 import com.vadimksn.game.tetris.view.GamePanel;
 import com.vadimksn.game.tetris.view.LeftPanel;
@@ -11,11 +12,12 @@ public class GameController {
     private final int[] SCORES = {100, 300, 700, 1500};
     private final int gameSpeed = 500;
     private final int acceleration = 20;
-    private Tile currentShape[][];
+    private Tile[][] currentShape;
     private Tile[][] nextShape0;
     private Tile[][] nextShape1;
     private Tile[][] nextShape2;
-    private Tile gameMas[][];
+    private Tile[][] gameMas;
+    private Player[] highScores = new Player[8];
     private boolean isPaused;
     private boolean isGameOver;
     private boolean isGameRunning;
@@ -551,5 +553,9 @@ public class GameController {
 
     public int getGameSpeed() {
         return gameSpeed;
+    }
+
+    public int getAcceleration() {
+        return acceleration;
     }
 }

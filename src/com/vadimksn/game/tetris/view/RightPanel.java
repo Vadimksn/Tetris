@@ -13,11 +13,11 @@ public class RightPanel extends JPanel {
     public static final int PANEL_HEIGHT = GamePanel.PANEL_HEIGHT;
     public static final Color BASE_DARK_COLOR = BaseColors.BASE_DARK_COLOR.getColor();
     public static final Color BASE_LIGHT_COLOR = BaseColors.BASE_LIGHT_COLOR.getColor();
-    public static final Color BASE_LIGHT_COLOR2 = BaseColors.BASE_LIGHT_COLOR2.getColor();
-    private static final RightPanel INSTANCE = new RightPanel();
-    private static final Font SMALL_FONT = new Font("Tahoma", Font.BOLD, 12);
-    private static final Font LARGE_FONT = new Font("Tahoma", Font.BOLD, 14);
-    private static final Font FONT_FOR_ARROWS = new Font("Times New Roman", Font.PLAIN, 14);
+    public static final Color BASE_FONT_COLOR = BaseColors.BASE_FONT_COLOR.getColor();
+    public static final RightPanel INSTANCE = new RightPanel();
+    public static final Font SMALL_FONT = new Font("Tahoma", Font.BOLD, 12);
+    public static final Font LARGE_FONT = new Font("Tahoma", Font.BOLD, 14);
+    public static final Font FONT_FOR_ARROWS = new Font("Times New Roman", Font.PLAIN, 14);
 
 
     private RightPanel() {
@@ -47,17 +47,15 @@ public class RightPanel extends JPanel {
 //        g.drawRoundRect(0, TILE_SIZE * 5, PANEL_WIDTH - BORDER_SIZE * 3, TILE_SIZE, 10, 10);
 
         g.setFont(LARGE_FONT);
+        g.setColor(BASE_FONT_COLOR);
         g.drawString("Stats", smallOffsetByX, offsetByY);
         g.setFont(SMALL_FONT);
-//        g.drawRoundRect(0, TILE_SIZE, PANEL_WIDTH - BORDER_SIZE * 3, TILE_SIZE, 10, 10);
-//        g.drawRoundRect(0, TILE_SIZE*2, PANEL_WIDTH - BORDER_SIZE * 3, TILE_SIZE, 10, 10);
-//        g.drawRoundRect(0, TILE_SIZE*3, PANEL_WIDTH - BORDER_SIZE * 3, TILE_SIZE, 10, 10);
         g.drawString("Score: " + GameController.getINSTANCE().getScore(), largeOffsetByX, offsetByY += TILE_SIZE);
         g.drawString("Lines : " + GameController.getINSTANCE().getLines(), largeOffsetByX, offsetByY += TILE_SIZE);
         g.drawString("Level : " + GameController.getINSTANCE().getLevel(), largeOffsetByX, offsetByY += TILE_SIZE);
 
         g.setFont(LARGE_FONT);
-        g.drawString("Controls", smallOffsetByX, (offsetByY += TILE_SIZE * 8)-5);
+        g.drawString("Controls", smallOffsetByX, (offsetByY += TILE_SIZE * 8) - 5);
         g.setFont(FONT_FOR_ARROWS);
         g.drawString("←", largeOffsetByX, offsetByY += TILE_SIZE);
         g.setFont(SMALL_FONT);
@@ -74,8 +72,6 @@ public class RightPanel extends JPanel {
         g.drawString(" ↓ ", largeOffsetByX, offsetByY += TILE_SIZE);
         g.setFont(SMALL_FONT);
         g.drawString(" Drop", largeOffsetByX * 2, offsetByY);
-
-
         g.drawString(" P - Pause", largeOffsetByX, offsetByY += TILE_SIZE);
         g.drawString(" R - Restart", largeOffsetByX, offsetByY += TILE_SIZE);
 

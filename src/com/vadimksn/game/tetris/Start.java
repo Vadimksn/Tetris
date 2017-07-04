@@ -28,6 +28,7 @@ public class Start extends JFrame {
         add(rightPanel, BorderLayout.EAST);
         pack();
         setLocationRelativeTo(null);
+
         setVisible(true);
 
         addKeyListener(new KeyAdapter() {
@@ -47,8 +48,10 @@ public class Start extends JFrame {
                         gamePanel.repaint();
                         break;
                     case KeyEvent.VK_DOWN:
-                        if (gameController.canShapeStepDown(gameController.getCurrentShape()))
+                        if (gameController.canShapeStepDown(gameController.getCurrentShape())) {
                             gameController.stepDownShape(gameController.getCurrentShape());
+                        }
+
                         gamePanel.repaint();
                         break;
                     case KeyEvent.VK_UP:
@@ -81,23 +84,21 @@ public class Start extends JFrame {
                             gameController.setGameRunning(true);
                             leftPanel.repaint();
                             rightPanel.repaint();
+                            gamePanel.repaint();
                         }
                         break;
                 }
             }
 
-            @Override
-            public void keyReleased(KeyEvent e) {
-
-                switch (e.getKeyCode()) {
-
-                    case KeyEvent.VK_DOWN:
-
-                        break;
-                }
-
-            }
-
+//            @Override
+//            public void keyReleased(KeyEvent e) {
+//                switch (e.getKeyCode()) {
+//                    case KeyEvent.VK_DOWN:
+//                        gamePanel.getTimer().setDelay(gameController.getGameSpeed()
+//                                + gameController.getAcceleration() - gameController.getAcceleration() * gameController.getLevel());
+//                        break;
+//                }
+//            }
         });
     }
 

@@ -15,21 +15,25 @@ public class GamePanel extends JPanel implements ActionListener {
     public static final int COLUMNS_COUNT = 10;
     public static final int BORDER_SIZE = 5;
     public static final int TILE_SIZE = 25;
-    private static final int PANEL_WIDTH = TILE_SIZE * COLUMNS_COUNT + BORDER_SIZE * 2;
+    public static final int PANEL_WIDTH = TILE_SIZE * COLUMNS_COUNT + BORDER_SIZE * 2;
     public static final int PANEL_HEIGHT = TILE_SIZE * ROW_COUNT + BORDER_SIZE * 2;
     private static final Color BASE_DARK_COLOR = BaseColors.BASE_DARK_COLOR.getColor();
+    private static final Color BASE_FONT_COLOR = BaseColors.BASE_FONT_COLOR.getColor();
     private static final Color BASE_LIGHT_COLOR = BaseColors.BASE_LIGHT_COLOR.getColor();
     private static final Color BASE_LIGHT_COLOR2 = BaseColors.BASE_LIGHT_COLOR2.getColor();
     private static final GamePanel INSTANCE = new GamePanel();
-
+    private static final Font SMALL_FONT = new Font("Tahoma", Font.BOLD, 12);
     private GameController gameController = GameController.getINSTANCE();
     private Timer timer;
+    private JTextField textField = new JTextField(10);
 
     private GamePanel() {
         setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
         setBackground(BASE_DARK_COLOR);
         timer = new Timer(gameController.getGameSpeed(), this);
+//        timer = new Timer(0, this);
         timer.start();
+
     }
 
 
@@ -49,6 +53,22 @@ public class GamePanel extends JPanel implements ActionListener {
 
             PaintController.getINSTANCE().paintGameMas(gameController.getGameMas(), g);
             PaintController.getINSTANCE().paintShape(gameController.getCurrentShape(), g);
+
+        } else if (!gameController.isGameOver() && !gameController.isGameRunning()) {
+            PaintController.getINSTANCE().paintStartView(g);
+
+
+//            g.setColor(BASE_FONT_COLOR);
+//            Font font = new Font("Tahoma", Font.BOLD, 85);
+//            g.setFont(font);
+//            g.drawString("GAME", 2, TILE_SIZE * 5);
+//            g.drawString("OVER", 5, TILE_SIZE * 8);
+//            textField.setBounds(TILE_SIZE*3,TILE_SIZE*10,TILE_SIZE*5,TILE_SIZE*2);
+//            textField.setBackground(BASE_DARK_COLOR);
+//            textField.setForeground(BASE_LIGHT_COLOR);
+//            textField.setFont(SMALL_FONT);
+////            textField.set
+//            add(textField);
 
         }
         g.setColor(BASE_LIGHT_COLOR);

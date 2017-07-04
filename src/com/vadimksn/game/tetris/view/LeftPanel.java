@@ -8,19 +8,20 @@ import javax.swing.*;
 import java.awt.*;
 
 public class LeftPanel extends JPanel {
-    private static final int ROW_COUNT = 9;
-    private static final int COLUMNS_COUNT = 5;
-    private static final int TILE_SIZE = GamePanel.TILE_SIZE;
-    private static final int BORDER_SIZE = GamePanel.TILE_SIZE + GamePanel.BORDER_SIZE;
-    private static final int PANEL_WIDTH = GamePanel.TILE_SIZE * 5 + BORDER_SIZE * 2;
-    private static final int PANEL_HEIGHT = GamePanel.PANEL_HEIGHT;
-    private static final Color BASE_DARK_COLOR = BaseColors.BASE_DARK_COLOR.getColor();
-    private static final Color BASE_LIGHT_COLOR = BaseColors.BASE_LIGHT_COLOR.getColor();
-    private static final Color BASE_LIGHT_COLOR2 = BaseColors.BASE_LIGHT_COLOR2.getColor();
-    private static final LeftPanel INSTANCE = new LeftPanel();
-    private static final Font SMALL_FONT = new Font("Tahoma", Font.BOLD, 12);
-    private static final Font LARGE_FONT = new Font("Tahoma", Font.BOLD, 14);
-    private GameController gameController = GameController.getINSTANCE();
+    public static final int ROW_COUNT = 9;
+    public static final int COLUMNS_COUNT = 5;
+    public static final int TILE_SIZE = GamePanel.TILE_SIZE;
+    public static final int BORDER_SIZE = GamePanel.TILE_SIZE + GamePanel.BORDER_SIZE;
+    public static final int PANEL_WIDTH = GamePanel.TILE_SIZE * 5 + BORDER_SIZE * 2;
+    public static final int PANEL_HEIGHT = GamePanel.PANEL_HEIGHT;
+    public static final Color BASE_DARK_COLOR = BaseColors.BASE_DARK_COLOR.getColor();
+    public static final Color BASE_LIGHT_COLOR = BaseColors.BASE_LIGHT_COLOR.getColor();
+    public static final Color BASE_LIGHT_COLOR2 = BaseColors.BASE_LIGHT_COLOR2.getColor();
+    public static final Color BASE_FONT_COLOR = BaseColors.BASE_FONT_COLOR.getColor();
+    public static final LeftPanel INSTANCE = new LeftPanel();
+    public static final Font SMALL_FONT = new Font("Tahoma", Font.BOLD, 12);
+    public static final Font LARGE_FONT = new Font("Tahoma", Font.BOLD, 14);
+    public GameController gameController = GameController.getINSTANCE();
 
 
     private LeftPanel() {
@@ -33,9 +34,11 @@ public class LeftPanel extends JPanel {
         super.paint(g);
         g.translate(BORDER_SIZE, BORDER_SIZE);
 
-        g.setColor(BASE_LIGHT_COLOR);
+
         g.setFont(LARGE_FONT);
+        g.setColor(BASE_FONT_COLOR);
         g.drawString("Next", TILE_SIZE * 2 - 5, -5);
+        g.setColor(BASE_LIGHT_COLOR);
 //        g.drawLine(0, 0, TILE_SIZE * COLUMNS_COUNT, 0);
         g.drawLine(0, TILE_SIZE * 6, TILE_SIZE * COLUMNS_COUNT, TILE_SIZE * 6);
         g.setColor(BASE_LIGHT_COLOR2);
@@ -51,54 +54,56 @@ public class LeftPanel extends JPanel {
 
         int offsetByY = TILE_SIZE * 11;
         g.drawRoundRect(-15, offsetByY, TILE_SIZE * COLUMNS_COUNT + 30, TILE_SIZE * 19 - offsetByY, 10, 10);
-//        g.drawString("High Scores", TILE_SIZE, TILE_SIZE * 11 - 5);
-        g.drawString("HIGH SCORES", TILE_SIZE - 12, offsetByY - 5);
+        g.setColor(BASE_FONT_COLOR);
+        g.drawString("High Scores", TILE_SIZE, TILE_SIZE * 11 - 5);
+//        g.drawString("HIGH SCORES", TILE_SIZE - 12, offsetByY - 5);
 //        g.drawLine(-15, offsetByY, TILE_SIZE * COLUMNS_COUNT + 15, offsetByY);
 
 
         g.setFont(SMALL_FONT);
+        g.setColor(BASE_FONT_COLOR);
         g.drawString("Raman", -5, (offsetByY += TILE_SIZE) - 5);
         g.drawString("1000000", TILE_SIZE * 3, offsetByY - 5);
         g.setColor(BASE_LIGHT_COLOR2);
         g.drawLine(TILE_SIZE * 3 - 10, offsetByY, TILE_SIZE * 3 - 10, offsetByY - 5);
         g.drawLine(-10, offsetByY, TILE_SIZE * COLUMNS_COUNT + 10, offsetByY);
-        g.setColor(BASE_LIGHT_COLOR);
+        g.setColor(BASE_FONT_COLOR);
         g.drawString("Batya Oleg", -5, (offsetByY += TILE_SIZE) - 5);
         g.drawString("100000", TILE_SIZE * 3, offsetByY - 5);
         g.setColor(BASE_LIGHT_COLOR2);
         g.drawLine(TILE_SIZE * 3 - 10, offsetByY, TILE_SIZE * 3 - 10, offsetByY - 5);
         g.drawLine(-10, offsetByY, TILE_SIZE * COLUMNS_COUNT + 10, offsetByY);
-        g.setColor(BASE_LIGHT_COLOR);
+        g.setColor(BASE_FONT_COLOR);
         g.drawString("Vadya", -5, (offsetByY += TILE_SIZE) - 5);
         g.drawString("10000", TILE_SIZE * 3, offsetByY - 5);
         g.setColor(BASE_LIGHT_COLOR2);
         g.drawLine(TILE_SIZE * 3 - 10, offsetByY, TILE_SIZE * 3 - 10, offsetByY - 5);
         g.drawLine(-10, offsetByY, TILE_SIZE * COLUMNS_COUNT + 10, offsetByY);
-        g.setColor(BASE_LIGHT_COLOR);
+        g.setColor(BASE_FONT_COLOR);
         g.drawString("Imant", -5, (offsetByY += TILE_SIZE) - 5);
         g.drawString("1000", TILE_SIZE * 3, offsetByY - 5);
         g.setColor(BASE_LIGHT_COLOR2);
         g.drawLine(TILE_SIZE * 3 - 10, offsetByY, TILE_SIZE * 3 - 10, offsetByY - 5);
         g.drawLine(-10, offsetByY, TILE_SIZE * COLUMNS_COUNT + 10, offsetByY);
-        g.setColor(BASE_LIGHT_COLOR);
+        g.setColor(BASE_FONT_COLOR);
         g.drawString("Vasya", -5, (offsetByY += TILE_SIZE) - 5);
         g.drawString("100", TILE_SIZE * 3, offsetByY - 5);
         g.setColor(BASE_LIGHT_COLOR2);
         g.drawLine(TILE_SIZE * 3 - 10, offsetByY, TILE_SIZE * 3 - 10, offsetByY - 5);
         g.drawLine(-10, offsetByY, TILE_SIZE * COLUMNS_COUNT + 10, offsetByY);
-        g.setColor(BASE_LIGHT_COLOR);
+        g.setColor(BASE_FONT_COLOR);
         g.drawString("Vasya", -5, (offsetByY += TILE_SIZE) - 5);
         g.drawString("100", TILE_SIZE * 3, offsetByY - 5);
         g.setColor(BASE_LIGHT_COLOR2);
         g.drawLine(TILE_SIZE * 3 - 10, offsetByY, TILE_SIZE * 3 - 10, offsetByY - 5);
         g.drawLine(-10, offsetByY, TILE_SIZE * COLUMNS_COUNT + 10, offsetByY);
-        g.setColor(BASE_LIGHT_COLOR);
+        g.setColor(BASE_FONT_COLOR);
         g.drawString("Vasya", -5, (offsetByY += TILE_SIZE) - 5);
         g.drawString("100", TILE_SIZE * 3, offsetByY - 5);
         g.setColor(BASE_LIGHT_COLOR2);
         g.drawLine(TILE_SIZE * 3 - 10, offsetByY, TILE_SIZE * 3 - 10, offsetByY - 5);
         g.drawLine(-10, offsetByY, TILE_SIZE * COLUMNS_COUNT + 10, offsetByY);
-        g.setColor(BASE_LIGHT_COLOR);
+        g.setColor(BASE_FONT_COLOR);
         g.drawString("Vasya", -5, (offsetByY += TILE_SIZE) - 5);
         g.drawString("100", TILE_SIZE * 3, offsetByY - 5);
         g.setColor(BASE_LIGHT_COLOR2);
