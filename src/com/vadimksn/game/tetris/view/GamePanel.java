@@ -17,19 +17,20 @@ public class GamePanel extends JPanel implements ActionListener {
     public static final int TILE_SIZE = 25;
     public static final int PANEL_WIDTH = TILE_SIZE * COLUMNS_COUNT + BORDER_SIZE * 2;
     public static final int PANEL_HEIGHT = TILE_SIZE * ROW_COUNT + BORDER_SIZE * 2;
-    private static final Color BASE_DARK_COLOR = BaseColors.BASE_DARK_COLOR.getColor();
-    private static final Color BASE_FONT_COLOR = BaseColors.BASE_FONT_COLOR.getColor();
-    private static final Color BASE_LIGHT_COLOR = BaseColors.BASE_LIGHT_COLOR.getColor();
-    private static final Color BASE_LIGHT_COLOR2 = BaseColors.BASE_LIGHT_COLOR2.getColor();
+    private static final Color DARK_COLOR = BaseColors.DARK_COLOR.getColor();
+    private static final Color FONT_COLOR = BaseColors.FONT_COLOR.getColor();
+    private static final Color LIGHT_COLOR = BaseColors.LIGHT_COLOR.getColor();
+    private static final Color LIGHT_COLOR2 = BaseColors.LIGHT_COLOR2.getColor();
     private static final GamePanel INSTANCE = new GamePanel();
-    private static final Font SMALL_FONT = new Font("Tahoma", Font.BOLD, 12);
+    private static final Font SMALL_FONT = BaseFonts.SMALL_FONT.getFont();
     private GameController gameController = GameController.getINSTANCE();
+    private PaintController paintController = PaintController.getINSTANCE();
     private Timer timer;
     private JTextField textField = new JTextField(10);
 
     private GamePanel() {
         setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
-        setBackground(BASE_DARK_COLOR);
+        setBackground(DARK_COLOR);
         timer = new Timer(gameController.getGameSpeed(), this);
 //        timer = new Timer(0, this);
         timer.start();
@@ -41,38 +42,33 @@ public class GamePanel extends JPanel implements ActionListener {
     public void paint(Graphics g) {
         super.paint(g);
         g.translate(BORDER_SIZE, BORDER_SIZE);
+        g.setColor(DARK_COLOR.darker());
+        g.fillRoundRect(0, 0, TILE_SIZE * COLUMNS_COUNT, TILE_SIZE * ROW_COUNT, 10, 10);
 
-        if (gameController.isGameRunning()) {
-            g.setColor(BASE_LIGHT_COLOR2);
+        if (!gameController.isGameRunning()) {
+            paintController.paintTetrisView(g);
+
+        } else if (gameController.isGameRunning()) {
+            g.setColor(LIGHT_COLOR2);
             for (int x = 0; x < COLUMNS_COUNT; x++) {
                 for (int y = 0; y < ROW_COUNT; y++) {
                     if (y > 0) g.drawLine(0, y * TILE_SIZE, TILE_SIZE * COLUMNS_COUNT, y * TILE_SIZE);
                     if (x > 0) g.drawLine(x * TILE_SIZE, 0, x * TILE_SIZE, TILE_SIZE * ROW_COUNT);
                 }
             }
+            paintController.paintGameMas(gameController.getGameMas(), g);
+            paintController.paintShape(gameController.getCurrentShape(), g);
 
-            PaintController.getINSTANCE().paintGameMas(gameController.getGameMas(), g);
-            PaintController.getINSTANCE().paintShape(gameController.getCurrentShape(), g);
+            if (gameController.isPaused() && !gameController.isGameOver()) {
+                paintController.paintPauseView(g);
 
-        } else if (!gameController.isGameOver() && !gameController.isGameRunning()) {
-            PaintController.getINSTANCE().paintStartView(g);
-
-
-//            g.setColor(BASE_FONT_COLOR);
-//            Font font = new Font("Tahoma", Font.BOLD, 85);
-//            g.setFont(font);
-//            g.drawString("GAME", 2, TILE_SIZE * 5);
-//            g.drawString("OVER", 5, TILE_SIZE * 8);
-//            textField.setBounds(TILE_SIZE*3,TILE_SIZE*10,TILE_SIZE*5,TILE_SIZE*2);
-//            textField.setBackground(BASE_DARK_COLOR);
-//            textField.setForeground(BASE_LIGHT_COLOR);
-//            textField.setFont(SMALL_FONT);
-////            textField.set
-//            add(textField);
-
+            } else if (gameController.isGameOver()) {
+                paintController.paintGameOverView(g);
+            }
         }
-        g.setColor(BASE_LIGHT_COLOR);
+        g.setColor(LIGHT_COLOR);
         g.drawRoundRect(0, 0, TILE_SIZE * COLUMNS_COUNT, TILE_SIZE * ROW_COUNT, 10, 10);
+        g.drawRoundRect(-1, -1, TILE_SIZE * COLUMNS_COUNT + 2, TILE_SIZE * ROW_COUNT + 2, 10, 10);
     }
 
 
@@ -106,16 +102,16 @@ public class GamePanel extends JPanel implements ActionListener {
         return PANEL_HEIGHT;
     }
 
-    public static Color getBaseDarkColor() {
-        return BASE_DARK_COLOR;
+    public static Color getDarkColor() {
+        return DARK_COLOR;
     }
 
-    public static Color getBaseLightColor() {
-        return BASE_LIGHT_COLOR;
+    public static Color getLightColor() {
+        return LIGHT_COLOR;
     }
 
-    public static Color getBaseLightColor2() {
-        return BASE_LIGHT_COLOR2;
+    public static Color getLightColor2() {
+        return LIGHT_COLOR2;
     }
 
     public Timer getTimer() {

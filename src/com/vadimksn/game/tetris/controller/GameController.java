@@ -10,7 +10,7 @@ import com.vadimksn.game.tetris.view.RightPanel;
 public class GameController {
     private static final GameController INSTANCE = new GameController();
     private final int[] SCORES = {100, 300, 700, 1500};
-    private final int gameSpeed = 500;
+    private final int gameSpeed = 0;
     private final int acceleration = 20;
     private Tile[][] currentShape;
     private Tile[][] nextShape0;
@@ -58,7 +58,7 @@ public class GameController {
                     updateNextShapes();
                     if (gameOver()) {
                         isGameOver = true;
-                        isGameRunning = false;
+//                        isGameRunning = false;
                     }
                 }
             }

@@ -1,7 +1,6 @@
 package com.vadimksn.game.tetris.view;
 
 import com.vadimksn.game.tetris.controller.GameController;
-import com.vadimksn.game.tetris.model.Tile;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,25 +10,25 @@ public class RightPanel extends JPanel {
     public static final int BORDER_SIZE = GamePanel.BORDER_SIZE;
     public static final int PANEL_WIDTH = GamePanel.TILE_SIZE * 5 + BORDER_SIZE * 2;
     public static final int PANEL_HEIGHT = GamePanel.PANEL_HEIGHT;
-    public static final Color BASE_DARK_COLOR = BaseColors.BASE_DARK_COLOR.getColor();
-    public static final Color BASE_LIGHT_COLOR = BaseColors.BASE_LIGHT_COLOR.getColor();
-    public static final Color BASE_FONT_COLOR = BaseColors.BASE_FONT_COLOR.getColor();
+    public static final Color DARK_COLOR = BaseColors.DARK_COLOR.getColor();
+    public static final Color LIGHT_COLOR = BaseColors.LIGHT_COLOR.getColor();
+    public static final Color FONT_COLOR = BaseColors.FONT_COLOR.getColor();
     public static final RightPanel INSTANCE = new RightPanel();
-    public static final Font SMALL_FONT = new Font("Tahoma", Font.BOLD, 12);
-    public static final Font LARGE_FONT = new Font("Tahoma", Font.BOLD, 14);
+    public static final Font SMALL_FONT = BaseFonts.SMALL_FONT.getFont();
+    public static final Font LARGE_FONT = BaseFonts.LARGE_FONT.getFont();
     public static final Font FONT_FOR_ARROWS = new Font("Times New Roman", Font.PLAIN, 14);
 
 
     private RightPanel() {
         setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
-        setBackground(BASE_DARK_COLOR);
+        setBackground(DARK_COLOR);
     }
 
     @Override
     public void paint(Graphics g) {
         super.paint(g);
         g.translate(BORDER_SIZE, BORDER_SIZE);
-        g.setColor(BASE_LIGHT_COLOR);
+        g.setColor(LIGHT_COLOR);
         int offsetByY = TILE_SIZE;
         int smallOffsetByX = 0;
         int largeOffsetByX = 20;
@@ -38,7 +37,7 @@ public class RightPanel extends JPanel {
 //        g.drawString("LINES", TILE_SIZE + BORDER_SIZE * 2, TILE_SIZE * 3 - BORDER_SIZE);
 //        g.drawString("LEVEL", TILE_SIZE + BORDER_SIZE * 2, TILE_SIZE * 5 - BORDER_SIZE);
 //
-//        g.setColor(BASE_LIGHT_COLOR);
+//        g.setColor(LIGHT_COLOR);
 //        g.drawString("" + GameController.getINSTANCE().getScore(), BORDER_SIZE, TILE_SIZE * 2 - BORDER_SIZE);
 //        g.drawString("" + GameController.getINSTANCE().getLines(), TILE_SIZE * 2, TILE_SIZE * 4 - BORDER_SIZE);
 //        g.drawString("" + GameController.getINSTANCE().getLevel(), TILE_SIZE * 2, TILE_SIZE * 6 - BORDER_SIZE);
@@ -47,7 +46,7 @@ public class RightPanel extends JPanel {
 //        g.drawRoundRect(0, TILE_SIZE * 5, PANEL_WIDTH - BORDER_SIZE * 3, TILE_SIZE, 10, 10);
 
         g.setFont(LARGE_FONT);
-        g.setColor(BASE_FONT_COLOR);
+        g.setColor(FONT_COLOR);
         g.drawString("Stats", smallOffsetByX, offsetByY);
         g.setFont(SMALL_FONT);
         g.drawString("Score: " + GameController.getINSTANCE().getScore(), largeOffsetByX, offsetByY += TILE_SIZE);

@@ -14,19 +14,19 @@ public class LeftPanel extends JPanel {
     public static final int BORDER_SIZE = GamePanel.TILE_SIZE + GamePanel.BORDER_SIZE;
     public static final int PANEL_WIDTH = GamePanel.TILE_SIZE * 5 + BORDER_SIZE * 2;
     public static final int PANEL_HEIGHT = GamePanel.PANEL_HEIGHT;
-    public static final Color BASE_DARK_COLOR = BaseColors.BASE_DARK_COLOR.getColor();
-    public static final Color BASE_LIGHT_COLOR = BaseColors.BASE_LIGHT_COLOR.getColor();
-    public static final Color BASE_LIGHT_COLOR2 = BaseColors.BASE_LIGHT_COLOR2.getColor();
-    public static final Color BASE_FONT_COLOR = BaseColors.BASE_FONT_COLOR.getColor();
+    public static final Color DARK_COLOR = BaseColors.DARK_COLOR.getColor();
+    public static final Color LIGHT_COLOR = BaseColors.LIGHT_COLOR.getColor();
+    public static final Color LIGHT_COLOR2 = BaseColors.LIGHT_COLOR2.getColor();
+    public static final Color FONT_COLOR = BaseColors.FONT_COLOR.getColor();
     public static final LeftPanel INSTANCE = new LeftPanel();
-    public static final Font SMALL_FONT = new Font("Tahoma", Font.BOLD, 12);
-    public static final Font LARGE_FONT = new Font("Tahoma", Font.BOLD, 14);
+    public static final Font SMALL_FONT = BaseFonts.SMALL_FONT.getFont();
+    public static final Font LARGE_FONT = BaseFonts.LARGE_FONT.getFont();
     public GameController gameController = GameController.getINSTANCE();
 
 
     private LeftPanel() {
         setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
-        setBackground(BASE_DARK_COLOR);
+        setBackground(DARK_COLOR);
     }
 
     @Override
@@ -34,92 +34,86 @@ public class LeftPanel extends JPanel {
         super.paint(g);
         g.translate(BORDER_SIZE, BORDER_SIZE);
 
+        g.setColor(DARK_COLOR.darker());
+        g.fillRoundRect(0, 0, TILE_SIZE * COLUMNS_COUNT, TILE_SIZE * ROW_COUNT, 10, 10);
 
         g.setFont(LARGE_FONT);
-        g.setColor(BASE_FONT_COLOR);
+        g.setColor(FONT_COLOR);
         g.drawString("Next", TILE_SIZE * 2 - 5, -5);
-        g.setColor(BASE_LIGHT_COLOR);
-//        g.drawLine(0, 0, TILE_SIZE * COLUMNS_COUNT, 0);
-        g.drawLine(0, TILE_SIZE * 6, TILE_SIZE * COLUMNS_COUNT, TILE_SIZE * 6);
-        g.setColor(BASE_LIGHT_COLOR2);
-        g.drawLine(0, TILE_SIZE * 3, TILE_SIZE * COLUMNS_COUNT, TILE_SIZE * 3);
         if (gameController.isGameRunning()) {
+            g.setColor(LIGHT_COLOR);
+            g.drawLine(0, TILE_SIZE * 6, TILE_SIZE * COLUMNS_COUNT, TILE_SIZE * 6);
+            g.setColor(LIGHT_COLOR2);
+            g.drawLine(0, TILE_SIZE * 3, TILE_SIZE * COLUMNS_COUNT, TILE_SIZE * 3);
             paintNextShape(6, gameController.getNextShape0(), g);
             paintNextShape(3, gameController.getNextShape1(), g);
             paintNextShape(0, gameController.getNextShape2(), g);
         }
-        g.setColor(BASE_LIGHT_COLOR);
+        g.setColor(LIGHT_COLOR);
         g.drawRoundRect(0, 0, TILE_SIZE * COLUMNS_COUNT, TILE_SIZE * ROW_COUNT, 10, 10);
 
 
         int offsetByY = TILE_SIZE * 11;
+        g.setColor(DARK_COLOR.darker());
+        g.fillRoundRect(-15, offsetByY, TILE_SIZE * COLUMNS_COUNT + 30, TILE_SIZE * 19 - offsetByY, 10, 10);
+        g.setColor(LIGHT_COLOR);
         g.drawRoundRect(-15, offsetByY, TILE_SIZE * COLUMNS_COUNT + 30, TILE_SIZE * 19 - offsetByY, 10, 10);
-        g.setColor(BASE_FONT_COLOR);
+        g.setColor(FONT_COLOR);
         g.drawString("High Scores", TILE_SIZE, TILE_SIZE * 11 - 5);
 //        g.drawString("HIGH SCORES", TILE_SIZE - 12, offsetByY - 5);
 //        g.drawLine(-15, offsetByY, TILE_SIZE * COLUMNS_COUNT + 15, offsetByY);
 
 
         g.setFont(SMALL_FONT);
-        g.setColor(BASE_FONT_COLOR);
+        g.setColor(FONT_COLOR);
         g.drawString("Raman", -5, (offsetByY += TILE_SIZE) - 5);
         g.drawString("1000000", TILE_SIZE * 3, offsetByY - 5);
-        g.setColor(BASE_LIGHT_COLOR2);
+        g.setColor(LIGHT_COLOR2);
         g.drawLine(TILE_SIZE * 3 - 10, offsetByY, TILE_SIZE * 3 - 10, offsetByY - 5);
         g.drawLine(-10, offsetByY, TILE_SIZE * COLUMNS_COUNT + 10, offsetByY);
-        g.setColor(BASE_FONT_COLOR);
+        g.setColor(FONT_COLOR);
         g.drawString("Batya Oleg", -5, (offsetByY += TILE_SIZE) - 5);
         g.drawString("100000", TILE_SIZE * 3, offsetByY - 5);
-        g.setColor(BASE_LIGHT_COLOR2);
+        g.setColor(LIGHT_COLOR2);
         g.drawLine(TILE_SIZE * 3 - 10, offsetByY, TILE_SIZE * 3 - 10, offsetByY - 5);
         g.drawLine(-10, offsetByY, TILE_SIZE * COLUMNS_COUNT + 10, offsetByY);
-        g.setColor(BASE_FONT_COLOR);
+        g.setColor(FONT_COLOR);
         g.drawString("Vadya", -5, (offsetByY += TILE_SIZE) - 5);
         g.drawString("10000", TILE_SIZE * 3, offsetByY - 5);
-        g.setColor(BASE_LIGHT_COLOR2);
+        g.setColor(LIGHT_COLOR2);
         g.drawLine(TILE_SIZE * 3 - 10, offsetByY, TILE_SIZE * 3 - 10, offsetByY - 5);
         g.drawLine(-10, offsetByY, TILE_SIZE * COLUMNS_COUNT + 10, offsetByY);
-        g.setColor(BASE_FONT_COLOR);
+        g.setColor(FONT_COLOR);
         g.drawString("Imant", -5, (offsetByY += TILE_SIZE) - 5);
         g.drawString("1000", TILE_SIZE * 3, offsetByY - 5);
-        g.setColor(BASE_LIGHT_COLOR2);
+        g.setColor(LIGHT_COLOR2);
         g.drawLine(TILE_SIZE * 3 - 10, offsetByY, TILE_SIZE * 3 - 10, offsetByY - 5);
         g.drawLine(-10, offsetByY, TILE_SIZE * COLUMNS_COUNT + 10, offsetByY);
-        g.setColor(BASE_FONT_COLOR);
+        g.setColor(FONT_COLOR);
         g.drawString("Vasya", -5, (offsetByY += TILE_SIZE) - 5);
         g.drawString("100", TILE_SIZE * 3, offsetByY - 5);
-        g.setColor(BASE_LIGHT_COLOR2);
+        g.setColor(LIGHT_COLOR2);
         g.drawLine(TILE_SIZE * 3 - 10, offsetByY, TILE_SIZE * 3 - 10, offsetByY - 5);
         g.drawLine(-10, offsetByY, TILE_SIZE * COLUMNS_COUNT + 10, offsetByY);
-        g.setColor(BASE_FONT_COLOR);
+        g.setColor(FONT_COLOR);
         g.drawString("Vasya", -5, (offsetByY += TILE_SIZE) - 5);
         g.drawString("100", TILE_SIZE * 3, offsetByY - 5);
-        g.setColor(BASE_LIGHT_COLOR2);
+        g.setColor(LIGHT_COLOR2);
         g.drawLine(TILE_SIZE * 3 - 10, offsetByY, TILE_SIZE * 3 - 10, offsetByY - 5);
         g.drawLine(-10, offsetByY, TILE_SIZE * COLUMNS_COUNT + 10, offsetByY);
-        g.setColor(BASE_FONT_COLOR);
+        g.setColor(FONT_COLOR);
         g.drawString("Vasya", -5, (offsetByY += TILE_SIZE) - 5);
         g.drawString("100", TILE_SIZE * 3, offsetByY - 5);
-        g.setColor(BASE_LIGHT_COLOR2);
+        g.setColor(LIGHT_COLOR2);
         g.drawLine(TILE_SIZE * 3 - 10, offsetByY, TILE_SIZE * 3 - 10, offsetByY - 5);
         g.drawLine(-10, offsetByY, TILE_SIZE * COLUMNS_COUNT + 10, offsetByY);
-        g.setColor(BASE_FONT_COLOR);
+        g.setColor(FONT_COLOR);
         g.drawString("Vasya", -5, (offsetByY += TILE_SIZE) - 5);
         g.drawString("100", TILE_SIZE * 3, offsetByY - 5);
-        g.setColor(BASE_LIGHT_COLOR2);
+        g.setColor(LIGHT_COLOR2);
         g.drawLine(TILE_SIZE * 3 - 10, offsetByY, TILE_SIZE * 3 - 10, offsetByY - 5);
-        g.setColor(BASE_LIGHT_COLOR);
+        g.setColor(LIGHT_COLOR);
         g.drawLine(-10, offsetByY, TILE_SIZE * COLUMNS_COUNT + 10, offsetByY);
-
-
-//        g.drawLine(TILE_SIZE * 3 - 10, TILE_SIZE * 13, TILE_SIZE * 3 - 10, TILE_SIZE * 13 - 5);
-//        g.drawLine(-10, TILE_SIZE * 13, TILE_SIZE * COLUMNS_COUNT + 10, TILE_SIZE * 13);
-//        g.drawLine(TILE_SIZE * 3 - 10, TILE_SIZE * 14, TILE_SIZE * 3 - 10, TILE_SIZE * 14 - 5);
-//        g.drawLine(-10, TILE_SIZE * 14, TILE_SIZE * COLUMNS_COUNT + 10, TILE_SIZE * 14);
-//        g.drawLine(TILE_SIZE * 3 - 10, TILE_SIZE * 15, TILE_SIZE * 3 - 10, TILE_SIZE * 15 - 5);
-//        g.drawLine(-10, TILE_SIZE * 15, TILE_SIZE * COLUMNS_COUNT + 10, TILE_SIZE * 15);
-//        g.drawLine(TILE_SIZE * 3 - 10, TILE_SIZE * 16, TILE_SIZE * 3 - 10, TILE_SIZE * 16 - 5);
-//        g.drawLine(-10, TILE_SIZE * 16, TILE_SIZE * COLUMNS_COUNT + 10, TILE_SIZE * 16);
 
     }
 
@@ -158,16 +152,16 @@ public class LeftPanel extends JPanel {
         return PANEL_HEIGHT;
     }
 
-    public static Color getBaseDarkColor() {
-        return BASE_DARK_COLOR;
+    public static Color getDarkColor() {
+        return DARK_COLOR;
     }
 
-    public static Color getBaseLightColor() {
-        return BASE_LIGHT_COLOR;
+    public static Color getLightColor() {
+        return LIGHT_COLOR;
     }
 
-    public static Color getBaseLightColor2() {
-        return BASE_LIGHT_COLOR2;
+    public static Color getLightColor2() {
+        return LIGHT_COLOR2;
     }
 
     public static LeftPanel getINSTANCE() {
