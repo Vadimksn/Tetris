@@ -1,6 +1,8 @@
 package com.vadimksn.game.tetris.model;
 
-public class Player {
+import java.io.Serializable;
+
+public class Player implements Serializable{
     private String name;
     private int score;
 
@@ -23,5 +25,13 @@ public class Player {
 
     public void setScore(int score) {
         this.score = score;
+    }
+
+    @Override
+    public String toString() {
+        return "Player{" +
+                "name='" + name + '\'' +
+                ", score=" + score +
+                '}';
     }
 }

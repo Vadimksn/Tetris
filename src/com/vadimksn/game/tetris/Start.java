@@ -2,6 +2,7 @@ package com.vadimksn.game.tetris;
 
 import com.vadimksn.game.tetris.controller.Direction;
 import com.vadimksn.game.tetris.controller.GameController;
+import com.vadimksn.game.tetris.view.BaseFonts;
 import com.vadimksn.game.tetris.view.GamePanel;
 import com.vadimksn.game.tetris.view.LeftPanel;
 import com.vadimksn.game.tetris.view.RightPanel;
@@ -12,8 +13,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 public class Start extends JFrame {
-    private GamePanel gamePanel = GamePanel.getINSTANCE();
     private GameController gameController = GameController.getINSTANCE();
+    private GamePanel gamePanel = GamePanel.getINSTANCE();
     private RightPanel rightPanel = RightPanel.getINSTANCE();
     private LeftPanel leftPanel = LeftPanel.getINSTANCE();
 
@@ -74,14 +75,13 @@ public class Start extends JFrame {
                         }
                         break;
                     case KeyEvent.VK_ENTER:
-                        if (!gameController.isGameRunning() && !gameController.isGameOver()) {
+                        if (!gameController.isGameRunning()) {
                             gameController.resetGame();
                             gameController.setGameRunning(true);
                             leftPanel.repaint();
                             gamePanel.repaint();
-                        } else if (!gameController.isGameRunning() && gameController.isGameOver()) {
+                        } else if (gameController.isGameOver()) {
                             gameController.resetGame();
-                            gameController.setGameRunning(true);
                             leftPanel.repaint();
                             rightPanel.repaint();
                             gamePanel.repaint();

@@ -3,9 +3,12 @@ package com.vadimksn.game.tetris.controller;
 import com.vadimksn.game.tetris.model.Tile;
 import com.vadimksn.game.tetris.model.TileColor;
 import com.vadimksn.game.tetris.view.BaseColors;
+import com.vadimksn.game.tetris.view.BaseFonts;
 import com.vadimksn.game.tetris.view.GamePanel;
 
+import javax.swing.*;
 import java.awt.*;
+import java.util.Scanner;
 
 public class PaintController {
     private static final PaintController INSTANCE = new PaintController();
@@ -93,8 +96,8 @@ public class PaintController {
         int smallShiftByY = 12;
         int shiftByY = GamePanel.TILE_SIZE * 3 + smallShiftByY;
         int shiftByX = (250 - tileSize * columns) / 2;
-        int shiftByYForText = shiftByY + GamePanel.TILE_SIZE * 4 + 5;
-        int shiftByXForText = GamePanel.TILE_SIZE * 3;
+        int shiftByYForText = shiftByY + GamePanel.TILE_SIZE * 7 + 5;
+        int shiftByXForText = GamePanel.TILE_SIZE * 3 + 4;
 
         g.setColor(BaseColors.DARK_TRANSPARENT_COLOR.getColor());
         g.fillRoundRect(0, 0, GamePanel.PANEL_WIDTH - GamePanel.BORDER_SIZE * 2, GamePanel.PANEL_HEIGHT - GamePanel.BORDER_SIZE * 2, 10, 10);
@@ -108,6 +111,14 @@ public class PaintController {
             }
         }
         paintCutAngleForGameOverView(tileSize, shiftByY, shiftByX, color, g);
+
+        g.setColor(BaseColors.DARK_COLOR.getColor().darker());
+        g.fillRect(shiftByXForText - 3, shiftByYForText - smallShiftByY - 4,
+                GamePanel.TILE_SIZE * 4 - 1, GamePanel.TILE_SIZE - 1);
+        g.fillRect(shiftByXForText - 3, shiftByYForText - smallShiftByY + GamePanel.TILE_SIZE - 5,
+                GamePanel.TILE_SIZE * 4 - 1, GamePanel.TILE_SIZE);
+        g.setColor(BaseColors.FONT_COLOR.getColor());
+        g.drawString(gameOver, shiftByXForText, shiftByYForText);
     }
 
     public void paintPauseView(Graphics g) {

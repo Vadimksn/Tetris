@@ -7,17 +7,21 @@ import com.vadimksn.game.tetris.view.GamePanel;
 import com.vadimksn.game.tetris.view.LeftPanel;
 import com.vadimksn.game.tetris.view.RightPanel;
 
+import java.io.*;
+
 public class GameController {
     private static final GameController INSTANCE = new GameController();
     private final int[] SCORES = {100, 300, 700, 1500};
-    private final int gameSpeed = 0;
+    private final int gameSpeed = 500;
     private final int acceleration = 20;
     private Tile[][] currentShape;
     private Tile[][] nextShape0;
     private Tile[][] nextShape1;
     private Tile[][] nextShape2;
     private Tile[][] gameMas;
-    private Player[] highScores = new Player[8];
+    private Player[] highScores;
+    private String highScoresPath = "src\\com\\vadimksn\\game\\tetris\\HighScore";
+    private boolean isRecord;
     private boolean isPaused;
     private boolean isGameOver;
     private boolean isGameRunning;
@@ -27,6 +31,7 @@ public class GameController {
 
 
     private GameController() {
+        initHighScores();
         resetGame();
     }
 
@@ -36,6 +41,7 @@ public class GameController {
         nextShape0 = Figure.getRandomFigure();
         nextShape1 = Figure.getRandomFigure();
         nextShape2 = Figure.getRandomFigure();
+        isRecord = false;
         isPaused = false;
         isGameRunning = false;
         isGameOver = false;
@@ -385,6 +391,29 @@ public class GameController {
         }
     }
 
+    private void initHighScores() {
+        try (FileInputStream fileInputStream = new FileInputStream(highScoresPath);
+             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)) {
+            highScores = (Player[]) objectInputStream.readObject();
+        } catch (EOFException e) {
+            highScores = new Player[8];
+            for (int i = 0; i < highScores.length; i++) {
+                highScores[i] = new Player("---", 0);
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void saveHighScoresToFile() {
+        try (FileOutputStream fileOutputStream = new FileOutputStream(highScoresPath);
+             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream)) {
+            objectOutputStream.writeObject(highScores);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void moveTiles(int x, int y, int i, int j, Tile[] tiles, Tile[][] newShape) {
         for (Tile tile : tiles) {
             if (!isTileEmpty(tile)) {
@@ -557,5 +586,21 @@ public class GameController {
 
     public int getAcceleration() {
         return acceleration;
+    }
+
+    public boolean isRecord() {
+        return isRecord;
+    }
+
+    public void setRecord(boolean record) {
+        isRecord = record;
+    }
+
+    public Player[] getHighScores() {
+        return highScores;
+    }
+
+    public void setHighScores(Player[] highScores) {
+        this.highScores = highScores;
     }
 }

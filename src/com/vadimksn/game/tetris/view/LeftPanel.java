@@ -2,6 +2,7 @@ package com.vadimksn.game.tetris.view;
 
 import com.vadimksn.game.tetris.controller.GameController;
 import com.vadimksn.game.tetris.controller.PaintController;
+import com.vadimksn.game.tetris.model.Player;
 import com.vadimksn.game.tetris.model.Tile;
 
 import javax.swing.*;
@@ -60,61 +61,20 @@ public class LeftPanel extends JPanel {
         g.drawRoundRect(-15, offsetByY, TILE_SIZE * COLUMNS_COUNT + 30, TILE_SIZE * 19 - offsetByY, 10, 10);
         g.setColor(FONT_COLOR);
         g.drawString("High Scores", TILE_SIZE, TILE_SIZE * 11 - 5);
-//        g.drawString("HIGH SCORES", TILE_SIZE - 12, offsetByY - 5);
-//        g.drawLine(-15, offsetByY, TILE_SIZE * COLUMNS_COUNT + 15, offsetByY);
 
 
         g.setFont(SMALL_FONT);
-        g.setColor(FONT_COLOR);
-        g.drawString("Raman", -5, (offsetByY += TILE_SIZE) - 5);
-        g.drawString("1000000", TILE_SIZE * 3, offsetByY - 5);
-        g.setColor(LIGHT_COLOR2);
-        g.drawLine(TILE_SIZE * 3 - 10, offsetByY, TILE_SIZE * 3 - 10, offsetByY - 5);
-        g.drawLine(-10, offsetByY, TILE_SIZE * COLUMNS_COUNT + 10, offsetByY);
-        g.setColor(FONT_COLOR);
-        g.drawString("Batya Oleg", -5, (offsetByY += TILE_SIZE) - 5);
-        g.drawString("100000", TILE_SIZE * 3, offsetByY - 5);
-        g.setColor(LIGHT_COLOR2);
-        g.drawLine(TILE_SIZE * 3 - 10, offsetByY, TILE_SIZE * 3 - 10, offsetByY - 5);
-        g.drawLine(-10, offsetByY, TILE_SIZE * COLUMNS_COUNT + 10, offsetByY);
-        g.setColor(FONT_COLOR);
-        g.drawString("Vadya", -5, (offsetByY += TILE_SIZE) - 5);
-        g.drawString("10000", TILE_SIZE * 3, offsetByY - 5);
-        g.setColor(LIGHT_COLOR2);
-        g.drawLine(TILE_SIZE * 3 - 10, offsetByY, TILE_SIZE * 3 - 10, offsetByY - 5);
-        g.drawLine(-10, offsetByY, TILE_SIZE * COLUMNS_COUNT + 10, offsetByY);
-        g.setColor(FONT_COLOR);
-        g.drawString("Imant", -5, (offsetByY += TILE_SIZE) - 5);
-        g.drawString("1000", TILE_SIZE * 3, offsetByY - 5);
-        g.setColor(LIGHT_COLOR2);
-        g.drawLine(TILE_SIZE * 3 - 10, offsetByY, TILE_SIZE * 3 - 10, offsetByY - 5);
-        g.drawLine(-10, offsetByY, TILE_SIZE * COLUMNS_COUNT + 10, offsetByY);
-        g.setColor(FONT_COLOR);
-        g.drawString("Vasya", -5, (offsetByY += TILE_SIZE) - 5);
-        g.drawString("100", TILE_SIZE * 3, offsetByY - 5);
-        g.setColor(LIGHT_COLOR2);
-        g.drawLine(TILE_SIZE * 3 - 10, offsetByY, TILE_SIZE * 3 - 10, offsetByY - 5);
-        g.drawLine(-10, offsetByY, TILE_SIZE * COLUMNS_COUNT + 10, offsetByY);
-        g.setColor(FONT_COLOR);
-        g.drawString("Vasya", -5, (offsetByY += TILE_SIZE) - 5);
-        g.drawString("100", TILE_SIZE * 3, offsetByY - 5);
-        g.setColor(LIGHT_COLOR2);
-        g.drawLine(TILE_SIZE * 3 - 10, offsetByY, TILE_SIZE * 3 - 10, offsetByY - 5);
-        g.drawLine(-10, offsetByY, TILE_SIZE * COLUMNS_COUNT + 10, offsetByY);
-        g.setColor(FONT_COLOR);
-        g.drawString("Vasya", -5, (offsetByY += TILE_SIZE) - 5);
-        g.drawString("100", TILE_SIZE * 3, offsetByY - 5);
-        g.setColor(LIGHT_COLOR2);
-        g.drawLine(TILE_SIZE * 3 - 10, offsetByY, TILE_SIZE * 3 - 10, offsetByY - 5);
-        g.drawLine(-10, offsetByY, TILE_SIZE * COLUMNS_COUNT + 10, offsetByY);
-        g.setColor(FONT_COLOR);
-        g.drawString("Vasya", -5, (offsetByY += TILE_SIZE) - 5);
-        g.drawString("100", TILE_SIZE * 3, offsetByY - 5);
-        g.setColor(LIGHT_COLOR2);
-        g.drawLine(TILE_SIZE * 3 - 10, offsetByY, TILE_SIZE * 3 - 10, offsetByY - 5);
-        g.setColor(LIGHT_COLOR);
-        g.drawLine(-10, offsetByY, TILE_SIZE * COLUMNS_COUNT + 10, offsetByY);
-
+        for (int i = 0; i < 8; i++) {
+            if (gameController.getHighScores()[i] != null) {
+                Player player = gameController.getHighScores()[i];
+                g.setColor(FONT_COLOR);
+                g.drawString(player.getName(), -5, (offsetByY += TILE_SIZE) - 5);
+                g.drawString(String.valueOf(player.getScore()), TILE_SIZE * 3, offsetByY - 5);
+            } else offsetByY += TILE_SIZE;
+            g.setColor(LIGHT_COLOR2);
+            g.drawLine(TILE_SIZE * 3 - 10, offsetByY, TILE_SIZE * 3 - 10, offsetByY - 5);
+            g.drawLine(-10, offsetByY, TILE_SIZE * COLUMNS_COUNT + 10, offsetByY);
+        }
     }
 
 
