@@ -1,10 +1,14 @@
 package com.vadimksn.game.tetris.controller;
 
+import com.vadimksn.game.tetris.model.Player;
 import com.vadimksn.game.tetris.model.Tile;
 import com.vadimksn.game.tetris.model.TileColor;
 import com.vadimksn.game.tetris.view.BaseColors;
 import com.vadimksn.game.tetris.view.BaseFonts;
 import com.vadimksn.game.tetris.view.GamePanel;
+import com.vadimksn.game.tetris.view.LeftPanel;
+import com.vadimksn.game.tetris.view.new_record_dialog.EnterNameFrame;
+import javafx.application.Platform;
 
 import javax.swing.*;
 import java.awt.*;
@@ -41,6 +45,7 @@ public class PaintController {
 
 
     };
+    private boolean isShowRecordNameInput = false;
 
 
     private PaintController() {
@@ -89,7 +94,9 @@ public class PaintController {
 
     public void paintGameOverView(Graphics g) {
         Color color = BaseColors.GAME_OVER_COLOR.getColor();
-        String gameOver = "Enter your name:";
+        String newRecord = "New Record";
+        String name = "";
+        int score = GameController.getINSTANCE().getScore();
         int tileSize = 12;
         int rows = gameOverView.length;
         int columns = gameOverView[0].length;
@@ -97,12 +104,14 @@ public class PaintController {
         int shiftByY = GamePanel.TILE_SIZE * 3 + smallShiftByY;
         int shiftByX = (250 - tileSize * columns) / 2;
         int shiftByYForText = shiftByY + GamePanel.TILE_SIZE * 7 + 5;
-        int shiftByXForText = GamePanel.TILE_SIZE * 3 + 4;
+        int shiftByXForText = GamePanel.TILE_SIZE * 4 - GamePanel.TILE_SIZE / 2;
 
         g.setColor(BaseColors.DARK_TRANSPARENT_COLOR.getColor());
         g.fillRoundRect(0, 0, GamePanel.PANEL_WIDTH - GamePanel.BORDER_SIZE * 2, GamePanel.PANEL_HEIGHT - GamePanel.BORDER_SIZE * 2, 10, 10);
         g.setColor(BaseColors.DARK_COLOR.getColor().darker());
         g.fillRect(0, shiftByY - smallShiftByY + 1, GamePanel.PANEL_WIDTH - GamePanel.BORDER_SIZE * 2, GamePanel.TILE_SIZE * 6 - 1);
+        g.setColor(BaseColors.LIGHT_COLOR.getColor());
+        g.drawRect(0, shiftByY - smallShiftByY, GamePanel.PANEL_WIDTH - GamePanel.BORDER_SIZE * 2, GamePanel.TILE_SIZE * 6);
         for (int y = 0; y < rows; y++) {
             for (int x = 0; x < columns; x++) {
                 if (gameOverView[y][x] == 1) {
@@ -112,17 +121,49 @@ public class PaintController {
         }
         paintCutAngleForGameOverView(tileSize, shiftByY, shiftByX, color, g);
 
-
         if (GameController.getINSTANCE().isRecord()) {
+            if (!isShowRecordNameInput) {
+                new EnterNameFrame();
+            }
             g.setColor(BaseColors.DARK_COLOR.getColor().darker());
-            g.fillRect(shiftByXForText - 3, shiftByYForText - smallShiftByY - 4,
+            g.fillRect(GamePanel.TILE_SIZE * 3 + 1, shiftByYForText - smallShiftByY - 4,
                     GamePanel.TILE_SIZE * 4 - 1, GamePanel.TILE_SIZE - 1);
-            g.fillRect(shiftByXForText - 3, shiftByYForText - smallShiftByY + GamePanel.TILE_SIZE - 5,
-                    GamePanel.TILE_SIZE * 4 - 1, GamePanel.TILE_SIZE);
+            g.fillRect(GamePanel.TILE_SIZE * 2 + 1, shiftByYForText - smallShiftByY + GamePanel.TILE_SIZE - 4,
+                    GamePanel.TILE_SIZE * 6 - 1, GamePanel.TILE_SIZE * 2 - 1);
+            g.setColor(BaseColors.LIGHT_COLOR.getColor());
+            g.drawRect(GamePanel.TILE_SIZE * 3, shiftByYForText - smallShiftByY - 5,
+                    GamePanel.TILE_SIZE * 4, GamePanel.TILE_SIZE);
+            g.drawRect(GamePanel.TILE_SIZE * 2, shiftByYForText - smallShiftByY + GamePanel.TILE_SIZE - 5,
+                    GamePanel.TILE_SIZE * 6, GamePanel.TILE_SIZE * 2);
             g.setColor(BaseColors.FONT_COLOR.getColor());
-            g.drawString(gameOver, shiftByXForText, shiftByYForText);
-
+            g.setFont(BaseFonts.LARGE_FONT.getFont());
+            g.drawString(newRecord, shiftByXForText - 4, shiftByYForText);
+            Player[] highScores = GameController.getINSTANCE().getHighScores();
+            for (int i = highScores.length - 1; i >= 0; i--) {
+                if (highScores[i].getScore() == score) {
+                    name = highScores[i].getName();
+                    break;
+                }
+            }
+            g.setFont(BaseFonts.SMALL_FONT.getFont());
+            g.drawString("Name :", GamePanel.TILE_SIZE * 2 + 10, shiftByYForText + GamePanel.TILE_SIZE);
+            g.drawString("Score :", GamePanel.TILE_SIZE * 2 + 10, shiftByYForText + GamePanel.TILE_SIZE * 2);
+            g.drawString(name, GamePanel.TILE_SIZE * 4 + 2, shiftByYForText + GamePanel.TILE_SIZE);
+            g.drawString(String.valueOf(score), GamePanel.TILE_SIZE * 4 + 2, shiftByYForText + GamePanel.TILE_SIZE * 2);
+            LeftPanel.getINSTANCE().repaint();
         }
+
+        g.setColor(BaseColors.DARK_COLOR.getColor().darker());
+        g.fillRect(GamePanel.TILE_SIZE * 2 + 1, shiftByYForText - smallShiftByY + GamePanel.TILE_SIZE * 4 - 4,
+                GamePanel.TILE_SIZE * 6 - 1, GamePanel.TILE_SIZE * 2 - 1);
+        g.setColor(BaseColors.LIGHT_COLOR.getColor());
+        g.drawRect(GamePanel.TILE_SIZE * 2, shiftByYForText - smallShiftByY + GamePanel.TILE_SIZE * 4 - 5,
+                GamePanel.TILE_SIZE * 6, GamePanel.TILE_SIZE * 2);
+        g.setFont(BaseFonts.SMALL_FONT.getFont());
+        g.setColor(BaseColors.FONT_COLOR.getColor());
+        g.drawString("Press Enter to continue.", GamePanel.TILE_SIZE * 2 + 9, shiftByYForText + GamePanel.TILE_SIZE * 4);
+        g.drawString("Press R to restart.", GamePanel.TILE_SIZE * 3, shiftByYForText + GamePanel.TILE_SIZE * 5);
+
 
     }
 
@@ -145,6 +186,10 @@ public class PaintController {
         g.fillRect(0, shiftByY - smallShiftByY + 1, GamePanel.PANEL_WIDTH - GamePanel.BORDER_SIZE * 2, GamePanel.TILE_SIZE * 3 - 1);
         g.fillRect(shiftByXForText - GamePanel.TILE_SIZE + 1, shiftByY + GamePanel.TILE_SIZE * 4 - smallShiftByY + 1,
                 GamePanel.TILE_SIZE * 6 - 1, GamePanel.TILE_SIZE - 1);
+        g.setColor(BaseColors.LIGHT_COLOR.getColor());
+        g.drawRect(-1, shiftByY - smallShiftByY, GamePanel.PANEL_WIDTH - GamePanel.BORDER_SIZE * 2 + 1, GamePanel.TILE_SIZE * 3);
+        g.drawRect(shiftByXForText - GamePanel.TILE_SIZE, shiftByY + GamePanel.TILE_SIZE * 4 - smallShiftByY,
+                GamePanel.TILE_SIZE * 6, GamePanel.TILE_SIZE);
         g.setColor(BaseColors.FONT_COLOR.getColor());
         g.drawString(pausedGame, shiftByXForText, shiftByYForText);
 
@@ -157,7 +202,7 @@ public class PaintController {
         }
         int x1 = 0;
         for (int x = 0; x < 5; x++) {
-            int[] yPoints = {shiftByY + tileSize, shiftByY + tileSize, shiftByY - 1};
+            int[] yPoints = {shiftByY + tileSize, shiftByY + tileSize, shiftByY};
             int[] xPoints = {shiftByX + x1 * tileSize, shiftByX + tileSize + x1 * tileSize, shiftByX + tileSize + x1 * tileSize};
             paintPolygon(3, yPoints, xPoints, color, g);
             g.setColor(color.darker());
@@ -271,5 +316,13 @@ public class PaintController {
 
     public static PaintController getINSTANCE() {
         return INSTANCE;
+    }
+
+    public boolean isShowRecordNameInput() {
+        return isShowRecordNameInput;
+    }
+
+    public void setShowRecordNameInput(boolean showRecordNameInput) {
+        isShowRecordNameInput = showRecordNameInput;
     }
 }

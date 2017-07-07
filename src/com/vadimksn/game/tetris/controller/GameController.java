@@ -12,7 +12,7 @@ import java.io.*;
 public class GameController {
     private static final GameController INSTANCE = new GameController();
     private final int[] SCORES = {100, 300, 700, 1500};
-    private final int gameSpeed = 0;
+    private final int gameSpeed = 500;
     private final int acceleration = 20;
     private Tile[][] currentShape;
     private Tile[][] nextShape0;
@@ -89,13 +89,41 @@ public class GameController {
         LeftPanel.getINSTANCE().repaint();
     }
 
-    // TODO: 29.06.2017 доробити
     public boolean gameOver() {
-        if (!isTileEmpty(currentShape[0][0]) && currentShape[0][0].getX() == 3) {
-            if (!isTileEmpty(gameMas[1][3])) return true;
-        }
-        for (int x = 4; x < 7; x++) {
-            if (!isTileEmpty(gameMas[1][x])) return true;
+        if (currentShape.length == 1) {
+            for (int i = 3; i < 7; i++) {
+                if (!isTileEmpty(gameMas[0][i])) return true;
+            }
+        } else if (currentShape.length == 2 && currentShape[0].length == 2) {
+            for (int i = 0; i < 2; i++) {
+                for (int j = 4; j < 6; j++) {
+                    if (!isTileEmpty(gameMas[i][j])) return true;
+                }
+            }
+        } else if (currentShape[0].length == 3) {
+            if (Figure.isSecondRowIsFull(currentShape)) {
+                for (int i = 4; i < 7; i++) {
+                    if (!isTileEmpty(gameMas[1][i])) return true;
+                }
+                for (int i = 0; i < 3; i++) {
+                    if (!isTileEmpty(currentShape[0][i])) {
+                        Tile tile = currentShape[0][i];
+                        if (!isTileEmpty(gameMas[tile.getY()][tile.getX()])) return true;
+                    }
+                }
+            } else {
+                for (int i = 0; i < 2; i++) {
+                    if (!isTileEmpty(gameMas[i][5])) return true;
+                }
+                if (!isTileEmpty(currentShape[0][0])) {
+                    if (!isTileEmpty(gameMas[0][4])) return true;
+                    else if (!isTileEmpty(gameMas[1][6])) return true;
+
+                } else if (!isTileEmpty(currentShape[1][0])) {
+                    if (!isTileEmpty(gameMas[1][4])) return true;
+                    else if (!isTileEmpty(gameMas[0][6])) return true;
+                }
+            }
         }
         return false;
     }

@@ -2,6 +2,7 @@ package com.vadimksn.game.tetris;
 
 import com.vadimksn.game.tetris.controller.Direction;
 import com.vadimksn.game.tetris.controller.GameController;
+import com.vadimksn.game.tetris.controller.PaintController;
 import com.vadimksn.game.tetris.view.GamePanel;
 import com.vadimksn.game.tetris.view.LeftPanel;
 import com.vadimksn.game.tetris.view.RightPanel;
@@ -71,6 +72,7 @@ public class Start extends JFrame {
                             gamePanel.repaint();
                             leftPanel.repaint();
                             rightPanel.repaint();
+                            PaintController.getINSTANCE().setShowRecordNameInput(false);
                         }
                         break;
                     case KeyEvent.VK_ENTER:
@@ -84,6 +86,7 @@ public class Start extends JFrame {
                             leftPanel.repaint();
                             rightPanel.repaint();
                             gamePanel.repaint();
+                            PaintController.getINSTANCE().setShowRecordNameInput(false);
                         }
                         break;
                 }
