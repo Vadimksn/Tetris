@@ -2,7 +2,6 @@ package com.vadimksn.game.tetris;
 
 import com.vadimksn.game.tetris.controller.Direction;
 import com.vadimksn.game.tetris.controller.GameController;
-import com.vadimksn.game.tetris.view.BaseFonts;
 import com.vadimksn.game.tetris.view.GamePanel;
 import com.vadimksn.game.tetris.view.LeftPanel;
 import com.vadimksn.game.tetris.view.RightPanel;

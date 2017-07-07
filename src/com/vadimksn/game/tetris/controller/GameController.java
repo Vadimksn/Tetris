@@ -12,7 +12,7 @@ import java.io.*;
 public class GameController {
     private static final GameController INSTANCE = new GameController();
     private final int[] SCORES = {100, 300, 700, 1500};
-    private final int gameSpeed = 500;
+    private final int gameSpeed = 0;
     private final int acceleration = 20;
     private Tile[][] currentShape;
     private Tile[][] nextShape0;
@@ -64,6 +64,17 @@ public class GameController {
                     updateNextShapes();
                     if (gameOver()) {
                         isGameOver = true;
+                        for (int i = 0; i < highScores.length; i++) {
+                            if (highScores[i].getScore() < score) {
+                                if (i < highScores.length - 1) {
+                                    System.arraycopy(highScores, i, highScores, i + 1, highScores.length - i - 1);
+                                }
+                                highScores[i] = new Player("", score);
+                                isRecord = true;
+                                saveHighScoresToFile();
+                                break;
+                            }
+                        }
 //                        isGameRunning = false;
                     }
                 }

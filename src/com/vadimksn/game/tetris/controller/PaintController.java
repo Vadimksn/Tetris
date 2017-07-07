@@ -112,13 +112,18 @@ public class PaintController {
         }
         paintCutAngleForGameOverView(tileSize, shiftByY, shiftByX, color, g);
 
-        g.setColor(BaseColors.DARK_COLOR.getColor().darker());
-        g.fillRect(shiftByXForText - 3, shiftByYForText - smallShiftByY - 4,
-                GamePanel.TILE_SIZE * 4 - 1, GamePanel.TILE_SIZE - 1);
-        g.fillRect(shiftByXForText - 3, shiftByYForText - smallShiftByY + GamePanel.TILE_SIZE - 5,
-                GamePanel.TILE_SIZE * 4 - 1, GamePanel.TILE_SIZE);
-        g.setColor(BaseColors.FONT_COLOR.getColor());
-        g.drawString(gameOver, shiftByXForText, shiftByYForText);
+
+        if (GameController.getINSTANCE().isRecord()) {
+            g.setColor(BaseColors.DARK_COLOR.getColor().darker());
+            g.fillRect(shiftByXForText - 3, shiftByYForText - smallShiftByY - 4,
+                    GamePanel.TILE_SIZE * 4 - 1, GamePanel.TILE_SIZE - 1);
+            g.fillRect(shiftByXForText - 3, shiftByYForText - smallShiftByY + GamePanel.TILE_SIZE - 5,
+                    GamePanel.TILE_SIZE * 4 - 1, GamePanel.TILE_SIZE);
+            g.setColor(BaseColors.FONT_COLOR.getColor());
+            g.drawString(gameOver, shiftByXForText, shiftByYForText);
+
+        }
+
     }
 
     public void paintPauseView(Graphics g) {
