@@ -62,10 +62,4 @@ public class EnterNameFrame extends JFrame {
                 }
         );
     }
-
-
-    public static void main(String[] args) {
-        EnterNameFrame enterNameFrame = new EnterNameFrame();
-    }
-
 }
