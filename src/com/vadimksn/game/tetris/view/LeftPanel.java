@@ -28,6 +28,7 @@ public class LeftPanel extends JPanel {
     private LeftPanel() {
         setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
         setBackground(DARK_COLOR);
+
     }
 
     @Override
@@ -73,6 +74,7 @@ public class LeftPanel extends JPanel {
             } else offsetByY += TILE_SIZE;
             g.setColor(LIGHT_COLOR2);
             g.drawLine(TILE_SIZE * 3 - 10, offsetByY, TILE_SIZE * 3 - 10, offsetByY - 5);
+            if(i==7)g.setColor(LIGHT_COLOR);
             g.drawLine(-10, offsetByY, TILE_SIZE * COLUMNS_COUNT + 10, offsetByY);
         }
     }

@@ -20,7 +20,8 @@ public class GameController {
     private Tile[][] nextShape2;
     private Tile[][] gameMas;
     private Player[] highScores;
-    private String highScoresPath = "src\\com\\vadimksn\\game\\tetris\\HighScore";
+//    private String highScoresPath = "src\\com\\vadimksn\\game\\tetris\\HighScore";
+    private String highScoresPath = "TETRIS_HighScore";
     private boolean isRecord;
     private boolean isPaused;
     private boolean isGameOver;
@@ -434,6 +435,18 @@ public class GameController {
         try (FileInputStream fileInputStream = new FileInputStream(highScoresPath);
              ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)) {
             highScores = (Player[]) objectInputStream.readObject();
+        } catch (FileNotFoundException e) {
+            try {
+                File file = new File(highScoresPath);
+                file.createNewFile();
+                highScores = new Player[8];
+                for (int i = 0; i < highScores.length; i++) {
+                    highScores[i] = new Player("---", 0);
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+
         } catch (EOFException e) {
             highScores = new Player[8];
             for (int i = 0; i < highScores.length; i++) {
