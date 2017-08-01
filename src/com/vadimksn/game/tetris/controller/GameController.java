@@ -20,7 +20,6 @@ public class GameController {
     private Tile[][] nextShape2;
     private Tile[][] gameMas;
     private Player[] highScores;
-//    private String highScoresPath = "src\\com\\vadimksn\\game\\tetris\\HighScore";
     private String highScoresPath = "TETRIS_HighScore";
     private boolean isRecord;
     private boolean isPaused;
@@ -76,7 +75,6 @@ public class GameController {
                                 break;
                             }
                         }
-//                        isGameRunning = false;
                     }
                 }
             }
